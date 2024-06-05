@@ -1,6 +1,5 @@
 Here's the Markdown content for your `README.md` file. You can copy and paste this directly into your `README.md` file.
 
-```markdown
 # User Service Microservice
 
 This is the User Service microservice for the Healthcare Management System. It provides user authentication and authorization functionalities, including JWT-based authentication, role-based access control, and support for multi-factor authentication (MFA).
