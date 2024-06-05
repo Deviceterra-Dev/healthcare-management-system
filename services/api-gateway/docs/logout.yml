@@ -1,0 +1,5 @@
+responses:
+  200:
+    description: "Successfully logged out"
+security:
+  - Bearer: []

@@ -1,0 +1,14 @@
+responses:
+  200:
+    description: "Email has been verified successfully"
+  400:
+    description: "Invalid token or token has expired"
+parameters:
+  - name: token
+    in: query
+    type: string
+    required: True
+    description: "Verification token"
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+security:
+  - Bearer: []

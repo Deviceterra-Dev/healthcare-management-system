@@ -1,0 +1,38 @@
+responses:
+  201:
+    description: "User registered successfully"
+    schema:
+      type: object
+      properties:
+        token:
+          type: string
+        refresh_token:
+          type: string
+  400:
+    description: "User already exists"
+parameters:
+  - name: body
+    in: body
+    required: True
+    schema:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "johndoe@example.com"
+        password:
+          type: string
+          example: "Password123!"
+        username:
+          type: string
+          example: "johndoe"
+        phone:
+          type: string
+          example: "+1234567890"
+        role:
+          type: string
+          default: "patient"
+          example: "doctor"
+      required:
+        - email
+        - password

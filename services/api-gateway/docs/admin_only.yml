@@ -1,0 +1,7 @@
+responses:
+  200:
+    description: "Welcome, admin!"
+  403:
+    description: "Access forbidden: insufficient permissions"
+security:
+  - Bearer: []

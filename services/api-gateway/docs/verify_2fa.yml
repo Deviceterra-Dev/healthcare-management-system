@@ -1,0 +1,19 @@
+responses:
+  200:
+    description: "2FA verification successful"
+  400:
+    description: "Invalid 2FA code"
+parameters:
+  - name: body
+    in: body
+    required: True
+    schema:
+      type: object
+      properties:
+        2fa_code:
+          type: string
+          example: "123456"
+      required:
+        - 2fa_code
+security:
+  - Bearer: []
