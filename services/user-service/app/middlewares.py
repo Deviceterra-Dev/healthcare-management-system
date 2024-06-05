@@ -1,17 +1,16 @@
 from functools import wraps
-from flask import request, jsonify
 from flask_jwt_extended import get_jwt_identity
+from flask import request, jsonify
 from app.models import User
 
 def role_required(role):
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
             current_user = get_jwt_identity()
-            user_data = User.find_by_username(current_user)
-            if user_data and user_data['role'] == role:
-                return func(*args, **kwargs)
-            else:
-                return jsonify({'message': 'Access forbidden: insufficient rights'}), 403
-        return wrapper
+            user = User.find_by_username(current_user)
+            if user.role != role:
+                return jsonify({"message": "Access forbidden: insufficient permissions"}), 403
+            return f(*args, **kwargs)
+        return decorated_function
     return decorator

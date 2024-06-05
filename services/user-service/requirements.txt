@@ -12,3 +12,4 @@ PyJWT==2.8.0
 pymongo==4.7.2
 python-dotenv==1.0.1
 Werkzeug==3.0.3
+flasgger==0.9.5

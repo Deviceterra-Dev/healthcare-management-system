@@ -36,3 +36,10 @@ class User:
     @staticmethod
     def check_password(stored_password, provided_password):
         return check_password_hash(stored_password, provided_password)
+
+    @staticmethod
+    def update_user(username, updates):
+        client = MongoClient(current_app.config['MONGO_URI'])
+        db = client.healthcare
+        users = db.users
+        users.update_one({'username': username}, {'$set': updates})

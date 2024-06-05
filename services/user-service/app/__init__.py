@@ -1,14 +1,17 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
-from app.routes import auth
-from config import Config
+from flasgger import Swagger
+from .routes import auth
+from .swagger import swagger
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object('config.Config')
 
     jwt = JWTManager(app)
 
-    app.register_blueprint(auth, url_prefix='/api/auth')
+    app.register_blueprint(auth, url_prefix='/auth')
+
+    swagger.init_app(app)
 
     return app

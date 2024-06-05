@@ -1,0 +1,18 @@
+responses:
+  200:
+    description: "Profile retrieved successfully"
+    schema:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+  404:
+    description: "User not found"
+security:
+  - Bearer: []

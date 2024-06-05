@@ -1,0 +1,10 @@
+responses:
+  200:
+    description: "New access token generated"
+    schema:
+      type: object
+      properties:
+        token:
+          type: string
+security:
+  - Bearer: []
