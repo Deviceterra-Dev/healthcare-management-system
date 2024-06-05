@@ -17,15 +17,15 @@ parameters:
     schema:
       type: object
       properties:
-        username:
-          type: string
-          example: "johndoe"
-        password:
-          type: string
-          example: "Password123!"
         email:
           type: string
           example: "johndoe@example.com"
+        password:
+          type: string
+          example: "Password123!"
+        username:
+          type: string
+          example: "johndoe"
         phone:
           type: string
           example: "+1234567890"
@@ -34,6 +34,5 @@ parameters:
           default: "patient"
           example: "doctor"
       required:
-        - username
-        - password
         - email
+        - password

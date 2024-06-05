@@ -4,7 +4,7 @@ from flask_jwt_extended import (
     create_refresh_token, get_jwt
 )
 from app.models import User
-from app.utils import generate_token, generate_confirmation_token, confirm_token
+from app.utils import generate_confirmation_token, confirm_token
 from app.middlewares import role_required
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -12,50 +12,39 @@ from flasgger import swag_from
 
 auth = Blueprint('auth', __name__)
 
-def convert_objectid_to_str(data):
-    """ Convert ObjectId to string in a dictionary. """
-    if isinstance(data, list):
-        for item in data:
-            if '_id' in item and isinstance(item['_id'], ObjectId):
-                item['_id'] = str(item['_id'])
-    elif isinstance(data, dict):
-        if '_id' in data and isinstance(data['_id'], ObjectId):
-            data['_id'] = str(data['_id'])
-    return data
-
 @auth.route('/register', methods=['POST'])
 @swag_from('../docs/register.yml')
 def register():
     data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
     email = data.get('email')
+    password = data.get('password')
+    username = data.get('username')
     phone = data.get('phone')
     role = data.get('role', 'patient')
 
-    if User.find_by_username(username):
+    if User.find_by_email(email):
         return jsonify({'message': 'User already exists'}), 400
 
-    user = User(username, password, email, phone, role)
+    user = User(email, password, username, phone, role)
     user.save_to_db()
 
-    token = create_access_token(identity=username)
-    refresh_token = create_refresh_token(identity=username)
+    token = create_access_token(identity={'email': email, 'role': role})
+    refresh_token = create_refresh_token(identity={'email': email, 'role': role})
     return jsonify({'token': token, 'refresh_token': refresh_token}), 201
 
 @auth.route('/login', methods=['POST'])
 @swag_from('../docs/login.yml')
 def login():
     data = request.get_json()
-    username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
 
-    user_data = User.find_by_username(username)
+    user_data = User.find_by_email(email)
     if not user_data or not User.check_password(user_data['password'], password):
         return jsonify({'message': 'Invalid credentials'}), 401
 
-    token = create_access_token(identity=username)
-    refresh_token = create_refresh_token(identity=username)
+    token = create_access_token(identity={'email': email, 'role': user_data['role']})
+    refresh_token = create_refresh_token(identity={'email': email, 'role': user_data['role']})
     return jsonify({'token': token, 'refresh_token': refresh_token}), 200
 
 @auth.route('/profile', methods=['GET'])
@@ -63,7 +52,7 @@ def login():
 @swag_from('../docs/profile.yml')
 def profile():
     current_user = get_jwt_identity()
-    user = User.find_by_username(current_user)
+    user = User.find_by_email(current_user['email'])
     if not user:
         return jsonify({'message': 'User not found'}), 404
 
@@ -125,11 +114,11 @@ def setup_mfa():
     data = request.get_json()
     mfa_enabled = data.get('mfa_enabled')
 
-    user_data = User.find_by_username(current_user)
+    user_data = User.find_by_email(current_user['email'])
     if not user_data:
         return jsonify({'message': 'User not found'}), 404
 
-    User.update_user(current_user, {'mfa_enabled': mfa_enabled})
+    User.update_user(current_user['email'], {'mfa_enabled': mfa_enabled})
 
     return jsonify({'message': 'MFA setting updated successfully'}), 200
 
@@ -159,12 +148,12 @@ def change_password():
     current_password = data.get('current_password')
     new_password = data.get('new_password')
 
-    user_data = User.find_by_username(current_user)
+    user_data = User.find_by_email(current_user['email'])
     if not user_data or not User.check_password(user_data['password'], current_password):
         return jsonify({'message': 'Current password is incorrect'}), 401
 
     hashed_new_password = generate_password_hash(new_password)
-    User.update_user(current_user, {'password': hashed_new_password})
+    User.update_user(current_user['email'], {'password': hashed_new_password})
 
     return jsonify({'message': 'Password updated successfully'}), 200
 
@@ -197,7 +186,7 @@ def confirm_reset_password():
             return jsonify({'message': 'Invalid token'}), 400
 
         hashed_new_password = generate_password_hash(new_password)
-        User.update_user(user_data['username'], {'password': hashed_new_password})
+        User.update_user(user_data['email'], {'password': hashed_new_password})
 
         return jsonify({'message': 'Password has been reset successfully'}), 200
     except Exception as e:

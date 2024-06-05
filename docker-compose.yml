@@ -12,6 +12,16 @@ services:
     depends_on:
       - mongo
 
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+    environment:
+      - JWT_SECRET_KEY=your_jwt_secret_key
+    ports:
+      - "8000:8000"
+    depends_on:
+      - user-service
+
   appointment-service:
     build: ./services/appointment-service
     ports:
@@ -32,3 +42,5 @@ services:
 
 volumes:
   mongo_data:
+
+
