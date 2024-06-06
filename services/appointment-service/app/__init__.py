@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
+from flasgger import Swagger
 from app.routes import appointments
 from config import Config
 
@@ -8,6 +9,36 @@ def create_app():
     app.config.from_object(Config)
 
     jwt = JWTManager(app)
+
+    swagger_config = {
+        "headers": [],
+        "specs": [
+            {
+                "endpoint": 'apispec_1',
+                "route": '/apispec_1.json',
+                "rule_filter": lambda rule: True,  # all endpoints
+                "model_filter": lambda tag: True,  # all models
+            }
+        ],
+        "static_url_path": "/flasgger_static",
+        "swagger_ui": True,
+        "specs_route": "/apidocs/",
+        "securityDefinitions": {
+            "Bearer": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
+            }
+        },
+        "security": [
+            {
+                "Bearer": []
+            }
+        ],
+    }
+
+    swagger = Swagger(app, config=swagger_config)
 
     app.register_blueprint(appointments, url_prefix='/api/appointments')
 

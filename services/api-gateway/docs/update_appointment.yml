@@ -1,0 +1,34 @@
+responses:
+  200:
+    description: "Appointment updated successfully"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment updated successfully"
+  400:
+    description: "Invalid date format"
+  401:
+    description: "Token is missing or invalid"
+parameters:
+  - name: appointment_id
+    in: path
+    required: True
+    type: string
+    example: "60a6c0f0c459f81bb1d3c451"
+  - name: body
+    in: body
+    required: True
+    schema:
+      type: object
+      properties:
+        doctor:
+          type: string
+          example: "Dr. Smith"
+        date_time:
+          type: string
+          example: "2024-06-07 10:30:00"
+        status:
+          type: string
+          example: "scheduled"

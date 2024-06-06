@@ -1,0 +1,25 @@
+responses:
+  200:
+    description: "List of user appointments"
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "60a6c0f0c459f81bb1d3c451"
+          username:
+            type: string
+            example: "johndoe"
+          doctor:
+            type: string
+            example: "Dr. Smith"
+          date_time:
+            type: string
+            example: "2024-06-07 10:30:00"
+          status:
+            type: string
+            example: "scheduled"
+  401:
+    description: "Token is missing or invalid"

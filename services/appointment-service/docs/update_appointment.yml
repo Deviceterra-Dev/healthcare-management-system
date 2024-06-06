@@ -1,0 +1,48 @@
+swagger: "2.0"
+info:
+  description: "Update details of an appointment"
+  version: "1.0.0"
+  title: "Update Appointment"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+  - name: "appointment_id"
+    in: "path"
+    required: true
+    type: "string"
+    description: "ID of the appointment to update"
+  - in: "body"
+    name: "body"
+    description: "Fields to update in the appointment"
+    required: true
+    schema:
+      type: object
+      properties:
+        doctor:
+          type: string
+          example: "Dr. Smith"
+        date_time:
+          type: string
+          example: "2024-06-07 10:30:00"
+        status:
+          type: string
+          example: "rescheduled"
+responses:
+  200:
+    description: "Appointment updated successfully"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment updated successfully"
+  400:
+    description: "Invalid date format"
+  401:
+    description: "Token is missing or invalid"

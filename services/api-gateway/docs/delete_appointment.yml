@@ -1,0 +1,17 @@
+responses:
+  200:
+    description: "Appointment deleted successfully"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment deleted successfully"
+  401:
+    description: "Token is missing or invalid"
+parameters:
+  - name: appointment_id
+    in: path
+    required: True
+    type: string
+    example: "60a6c0f0c459f81bb1d3c451"
