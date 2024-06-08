@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "Get details of a specific appointment"
+  description: "Get details of an appointment"
   version: "1.0.0"
   title: "Get Appointment"
 security:
@@ -14,29 +14,22 @@ parameters:
     in: "path"
     required: true
     type: "string"
-    description: "ID of the appointment to fetch"
+    description: "ID of the appointment"
 responses:
   200:
-    description: "Appointment details"
+    description: "Details of the appointment"
     schema:
       type: object
       properties:
         _id:
           type: string
-          example: "60a6c0f0c459f81bb1d3c451"
-        username:
+        user:
           type: string
-          example: "johndoe"
         doctor:
           type: string
-          example: "Dr. Smith"
         date_time:
           type: string
-          example: "2024-06-07 10:30:00"
-        status:
-          type: string
-          example: "scheduled"
-  401:
-    description: "Token is missing or invalid"
   404:
     description: "Appointment not found"
+  401:
+    description: "Token is missing or invalid"

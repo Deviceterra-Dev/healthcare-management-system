@@ -1,19 +1,31 @@
-responses:
-  200:
-    description: "MFA setting updated successfully"
-  404:
-    description: "User not found"
+swagger: "2.0"
+info:
+  description: "API to set up Multi-Factor Authentication (MFA) for the user"
+  version: "1.0.0"
+  title: "Setup MFA"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
 parameters:
-  - name: body
-    in: body
-    required: True
+  - in: "body"
+    name: "body"
+    description: "Object containing the MFA setup details"
+    required: true
     schema:
       type: object
       properties:
         mfa_enabled:
           type: boolean
           example: true
-      required:
-        - mfa_enabled
-security:
-  - Bearer: []
+responses:
+  200:
+    description: "MFA setting updated successfully"
+  401:
+    description: "Token is missing or invalid"
+  404:
+    description: "User not found"

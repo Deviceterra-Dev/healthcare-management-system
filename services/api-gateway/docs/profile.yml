@@ -1,18 +1,42 @@
+swagger: "2.0"
+info:
+  description: "Get user profile"
+  version: "1.0.0"
+  title: "Profile"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+produces:
+  - "application/json"
 responses:
   200:
-    description: "Profile retrieved successfully"
+    description: "User profile retrieved successfully"
     schema:
       type: object
       properties:
         username:
           type: string
+          example: "johndoe"
         email:
           type: string
+          example: "user@example.com"
         phone:
           type: string
+          example: "1234567890"
         role:
           type: string
+          example: "patient"
+        specialty:
+          type: string
+          example: "Cardiology"
+        availability:
+          type: array
+          items:
+            type: string
+          example: ["Monday 10:00-14:00", "Wednesday 12:00-16:00"]
+        approved:
+          type: boolean
+          example: true
   404:
     description: "User not found"
-security:
-  - Bearer: []

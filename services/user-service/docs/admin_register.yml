@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "Register a new user"
+  description: "Register a new admin"
   version: "1.0.0"
-  title: "User Registration"
+  title: "Admin Registration"
 security:
   - Bearer: []
 tags:
@@ -14,37 +14,26 @@ produces:
 parameters:
   - in: "body"
     name: "body"
-    description: "User object that needs to be added"
+    description: "Admin object that needs to be added"
     required: true
     schema:
       type: object
       properties:
         email:
           type: string
-          example: "user@example.com"
+          example: "admin@example.com"
         password:
           type: string
           example: "password123"
         username:
           type: string
-          example: "johndoe"
+          example: "adminuser"
         phone:
           type: string
           example: "1234567890"
-        role:
-          type: string
-          example: "patient"
-        specialty:
-          type: string
-          example: "Cardiology"
-        availability:
-          type: array
-          items:
-            type: string
-          example: ["Monday 10:00-14:00", "Wednesday 12:00-16:00"]
 responses:
   201:
-    description: "User registered successfully"
+    description: "Admin registered successfully"
     schema:
       type: object
       properties:
@@ -56,3 +45,5 @@ responses:
           example: "Refresh JWT token"
   400:
     description: "User already exists"
+  401:
+    description: "Unauthorized"

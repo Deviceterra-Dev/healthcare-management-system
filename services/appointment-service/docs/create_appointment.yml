@@ -19,9 +19,9 @@ parameters:
     schema:
       type: object
       properties:
-        doctor:
+        doctor_id:
           type: string
-          example: "Dr. Smith"
+          example: "60d0fe4f5311236168a109ca"
         date_time:
           type: string
           example: "2024-06-07 10:30:00"
@@ -35,6 +35,6 @@ responses:
           type: string
           example: "Appointment created successfully"
   400:
-    description: "Invalid date format"
+    description: "Invalid date format or date and time in the past"
   401:
     description: "Token is missing or invalid"
