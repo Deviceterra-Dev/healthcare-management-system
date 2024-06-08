@@ -1,14 +1,21 @@
+swagger: "2.0"
+info:
+  description: "API to verify the email address of the user using a token sent via email"
+  version: "1.0.0"
+  title: "Verify Email"
+tags:
+  - "auth"
+produces:
+  - "application/json"
+parameters:
+  - name: token
+    in: query
+    type: string
+    required: true
+    description: "Verification token sent to the user's email"
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
 responses:
   200:
     description: "Email has been verified successfully"
   400:
     description: "Invalid token or token has expired"
-parameters:
-  - name: token
-    in: query
-    type: string
-    required: True
-    description: "Verification token"
-    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-security:
-  - Bearer: []

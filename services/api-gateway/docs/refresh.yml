@@ -1,10 +1,22 @@
+swagger: "2.0"
+info:
+  description: "API to refresh the JWT token for the user"
+  version: "1.0.0"
+  title: "Refresh Token"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+produces:
+  - "application/json"
 responses:
   200:
-    description: "New access token generated"
+    description: "New token generated successfully"
     schema:
       type: object
       properties:
         token:
           type: string
-security:
-  - Bearer: []
+          example: "new_jwt_token_here"
+  401:
+    description: "Token is missing or invalid"

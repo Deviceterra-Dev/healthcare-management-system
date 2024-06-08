@@ -1,25 +1,26 @@
-responses:
-  200:
-    description: "Appointment updated successfully"
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Appointment updated successfully"
-  400:
-    description: "Invalid date format"
-  401:
-    description: "Token is missing or invalid"
+swagger: "2.0"
+info:
+  description: "Update an existing appointment"
+  version: "1.0.0"
+  title: "Update Appointment"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
 parameters:
-  - name: appointment_id
-    in: path
-    required: True
-    type: string
-    example: "60a6c0f0c459f81bb1d3c451"
-  - name: body
-    in: body
-    required: True
+  - name: "appointment_id"
+    in: "path"
+    required: true
+    type: "string"
+    description: "ID of the appointment"
+  - in: "body"
+    name: "body"
+    description: "Appointment object that needs to be updated"
+    required: true
     schema:
       type: object
       properties:
@@ -28,7 +29,13 @@ parameters:
           example: "Dr. Smith"
         date_time:
           type: string
-          example: "2024-06-07 10:30:00"
-        status:
-          type: string
-          example: "scheduled"
+          example: "2024-06-10 14:30:00"
+responses:
+  200:
+    description: "Appointment updated successfully"
+  400:
+    description: "Invalid date format"
+  401:
+    description: "Token is missing or invalid"
+  404:
+    description: "Appointment not found"

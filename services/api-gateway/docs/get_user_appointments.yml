@@ -1,6 +1,17 @@
+swagger: "2.0"
+info:
+  description: "Get all appointments for the current user"
+  version: "1.0.0"
+  title: "Get User Appointments"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+produces:
+  - "application/json"
 responses:
   200:
-    description: "List of user appointments"
+    description: "List of user's appointments"
     schema:
       type: array
       items:
@@ -8,18 +19,11 @@ responses:
         properties:
           _id:
             type: string
-            example: "60a6c0f0c459f81bb1d3c451"
-          username:
+          user:
             type: string
-            example: "johndoe"
           doctor:
             type: string
-            example: "Dr. Smith"
           date_time:
             type: string
-            example: "2024-06-07 10:30:00"
-          status:
-            type: string
-            example: "scheduled"
   401:
     description: "Token is missing or invalid"

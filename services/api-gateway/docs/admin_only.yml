@@ -1,7 +1,18 @@
+swagger: "2.0"
+info:
+  description: "API route accessible only by admin users"
+  version: "1.0.0"
+  title: "Admin Only"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+produces:
+  - "application/json"
 responses:
   200:
     description: "Welcome, admin!"
+  401:
+    description: "Token is missing or invalid"
   403:
-    description: "Access forbidden: insufficient permissions"
-security:
-  - Bearer: []
+    description: "You do not have permission to access this resource"

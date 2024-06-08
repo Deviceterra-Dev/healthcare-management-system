@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "Delete an appointment"
+  description: "Delete an existing appointment"
   version: "1.0.0"
   title: "Delete Appointment"
 security:
@@ -12,9 +12,9 @@ produces:
 parameters:
   - name: "appointment_id"
     in: "path"
-    description: "ID of the appointment to delete"
+    description: "ID of the appointment that needs to be deleted"
     required: true
-    type: "string"
+    type: integer
 responses:
   200:
     description: "Appointment deleted successfully"
@@ -24,7 +24,7 @@ responses:
         message:
           type: string
           example: "Appointment deleted successfully"
-  401:
-    description: "Token is missing or invalid"
   404:
     description: "Appointment not found"
+  401:
+    description: "Token is missing or invalid"

@@ -1,3 +1,31 @@
+swagger: "2.0"
+info:
+  description: "Create a new appointment"
+  version: "1.0.0"
+  title: "Create Appointment"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+  - in: "body"
+    name: "body"
+    description: "Appointment object that needs to be added"
+    required: true
+    schema:
+      type: object
+      properties:
+        doctor:
+          type: string
+          example: "Dr. Smith"
+        date_time:
+          type: string
+          format: date-time
+          example: "2024-06-10T14:30:00"
 responses:
   201:
     description: "Appointment created successfully"
@@ -8,22 +36,6 @@ responses:
           type: string
           example: "Appointment created successfully"
   400:
-    description: "Invalid date format"
+    description: "Invalid date format. Please use the format: YYYY-MM-DDTHH:MM:SS"
   401:
     description: "Token is missing or invalid"
-parameters:
-  - name: body
-    in: body
-    required: True
-    schema:
-      type: object
-      properties:
-        doctor:
-          type: string
-          example: "Dr. Smith"
-        date_time:
-          type: string
-          example: "2024-06-07 10:30:00"
-      required:
-        - doctor
-        - date_time

@@ -1,28 +1,41 @@
-responses:
-  200:
-    description: "Login successful"
-    schema:
-      type: object
-      properties:
-        token:
-          type: string
-        refresh_token:
-          type: string
-  401:
-    description: "Invalid credentials"
+swagger: "2.0"
+info:
+  description: "User login"
+  version: "1.0.0"
+  title: "Login"
+tags:
+  - "auth"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
 parameters:
-  - name: body
-    in: body
-    required: True
+  - in: "body"
+    name: "body"
+    description: "Login object"
+    required: true
     schema:
       type: object
       properties:
         email:
           type: string
-          example: "johndoe@example.com"
+          example: "user@example.com"
         password:
           type: string
-          example: "Password123!"
-      required:
-        - email
-        - password
+          example: "password123"
+responses:
+  200:
+    description: "User logged in successfully"
+    schema:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "JWT token"
+        refresh_token:
+          type: string
+          example: "Refresh JWT token"
+  401:
+    description: "Invalid credentials"
+  403:
+    description: "Doctor not approved by admin"

@@ -1,0 +1,38 @@
+swagger: "2.0"
+info:
+  description: "Retrieve a list of doctors"
+  version: "1.0.0"
+  title: "Get Doctors"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+produces:
+  - "application/json"
+responses:
+  200:
+    description: "Successful retrieval of doctors"
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          username:
+            type: string
+            example: "Dr. Smith"
+          specialty:
+            type: string
+            example: "Cardiologist"
+          availability:
+            type: array
+            items:
+              type: string
+              example: "Monday 09:00-17:00"
+  401:
+    description: "Token is missing or invalid"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Token is missing or invalid"
