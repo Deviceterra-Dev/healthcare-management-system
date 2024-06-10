@@ -24,7 +24,7 @@ parameters:
           example: "admin@example.com"
         password:
           type: string
-          example: "password123"
+          example: "adminpassword"
         username:
           type: string
           example: "adminuser"
@@ -45,5 +45,3 @@ responses:
           example: "Refresh JWT token"
   400:
     description: "User already exists"
-  401:
-    description: "Unauthorized"

@@ -1,16 +1,16 @@
 swagger: "2.0"
 info:
-  description: "API to set up Two-Factor Authentication (2FA) for the user"
+  description: "Setup 2FA"
   version: "1.0.0"
   title: "Setup 2FA"
 security:
   - Bearer: []
 tags:
   - "auth"
+consumes:
+  - "application/json"
 produces:
   - "application/json"
 responses:
   200:
     description: "2FA setup successful"
-  401:
-    description: "Token is missing or invalid"

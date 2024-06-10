@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "API to log out the user by invalidating the JWT token"
+  description: "Logout user"
   version: "1.0.0"
   title: "Logout"
 security:
@@ -12,5 +12,3 @@ produces:
 responses:
   200:
     description: "Successfully logged out"
-  401:
-    description: "Token is missing or invalid"

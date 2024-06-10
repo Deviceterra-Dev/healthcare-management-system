@@ -18,18 +18,18 @@ swagger_config = {
 template = {
     "swagger": "2.0",
     "info": {
-        "title": "User Service API",
-        "description": "API documentation for the User Service microservice",
+        "title": "Healthcare Management System API",
+        "description": "API documentation for the Healthcare Management System",
         "contact": {
-            "responsibleOrganization": "My Company",
-            "responsibleDeveloper": "Developer Name",
-            "email": "developer@example.com",
-            "url": "www.example.com",
+            "responsibleOrganization": "Healthcare Solutions Inc.",
+            "responsibleDeveloper": "Dev Team",
+            "email": "devteam@healthcare-solutions.com",
+            "url": "https://www.healthcare-solutions.com",
         },
-        "termsOfService": "http://example.com/terms",
+        "termsOfService": "https://www.healthcare-solutions.com/terms",
         "version": "1.0"
     },
-    "basePath": "/",  # base bash for blueprint registration
+    "basePath": "/",  # base path for blueprint registration
     "schemes": [
         "http",
         "https"
@@ -41,7 +41,14 @@ template = {
             "in": "header",
             "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
         }
-    }
+    },
+    "security": [
+        {
+            "Bearer": []
+        }
+    ]
 }
 
-swagger = Swagger(config=swagger_config, template=template)
+def init_swagger(app):
+    swagger = Swagger(app, config=swagger_config, template=template)
+    return swagger

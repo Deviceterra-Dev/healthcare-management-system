@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "API route accessible only by admin users"
+  description: "Admin only route"
   version: "1.0.0"
   title: "Admin Only"
 security:
@@ -12,7 +12,5 @@ produces:
 responses:
   200:
     description: "Welcome, admin!"
-  401:
-    description: "Token is missing or invalid"
   403:
     description: "You do not have permission to access this resource"

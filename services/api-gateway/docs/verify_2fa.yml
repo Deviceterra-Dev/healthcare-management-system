@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "API to verify the Two-Factor Authentication (2FA) code"
+  description: "Verify 2FA"
   version: "1.0.0"
   title: "Verify 2FA"
 security:
@@ -11,21 +11,6 @@ consumes:
   - "application/json"
 produces:
   - "application/json"
-parameters:
-  - in: "body"
-    name: "body"
-    description: "Object containing the 2FA verification code"
-    required: true
-    schema:
-      type: object
-      properties:
-        code:
-          type: string
-          example: "123456"
 responses:
   200:
     description: "2FA verification successful"
-  401:
-    description: "Token is missing or invalid"
-  400:
-    description: "Invalid 2FA code"

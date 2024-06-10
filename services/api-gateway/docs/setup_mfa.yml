@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "API to set up Multi-Factor Authentication (MFA) for the user"
+  description: "Setup MFA"
   version: "1.0.0"
   title: "Setup MFA"
 security:
@@ -14,7 +14,7 @@ produces:
 parameters:
   - in: "body"
     name: "body"
-    description: "Object containing the MFA setup details"
+    description: "MFA settings"
     required: true
     schema:
       type: object
@@ -25,7 +25,5 @@ parameters:
 responses:
   200:
     description: "MFA setting updated successfully"
-  401:
-    description: "Token is missing or invalid"
   404:
     description: "User not found"

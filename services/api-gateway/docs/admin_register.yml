@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "Register a new admin"
+  description: "Admin registration"
   version: "1.0.0"
-  title: "Admin Registration"
+  title: "Admin Register"
 security:
   - Bearer: []
 tags:
@@ -14,7 +14,7 @@ produces:
 parameters:
   - in: "body"
     name: "body"
-    description: "Admin object that needs to be added"
+    description: "Admin registration data"
     required: true
     schema:
       type: object
@@ -45,5 +45,3 @@ responses:
           example: "Refresh JWT token"
   400:
     description: "User already exists"
-  401:
-    description: "Unauthorized"

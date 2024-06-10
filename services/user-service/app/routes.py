@@ -9,8 +9,21 @@ from app.middlewares import role_required
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from flasgger import swag_from
+from datetime import datetime
 
 auth = Blueprint('auth', __name__)
+
+@auth.route('/doctors/<doctor_id>/availability', methods=['GET'])
+@jwt_required()
+@swag_from('../docs/get_doctor_availability.yml')
+def get_doctor_availability(doctor_id):
+    user = User.find_by_id(doctor_id)
+    if not user or user['role'] != 'doctor':
+        return jsonify({'message': 'Doctor not found'}), 404
+    
+    return jsonify({
+        'availability': user.get('availability', [])
+    }), 200
 
 @auth.route('/register', methods=['POST'])
 @swag_from('../docs/register.yml')
@@ -21,14 +34,15 @@ def register():
     username = data.get('username')
     phone = data.get('phone')
     role = data.get('role', 'patient')
-    specialty = data.get('specialty')
-    availability = data.get('availability', [])
+    specialty = data.get('specialty') if role == 'doctor' else None
+    address = data.get('address')
+    dob = data.get('dob')
     approved = role != 'doctor'  # Doctors require admin approval
 
     if User.find_by_email(email):
         return jsonify({'message': 'User already exists'}), 400
 
-    user = User(email, password, username, phone, role, specialty, availability, approved)
+    user = User(email, password, username, phone, role, specialty, availability=[], approved=approved, address=address, dob=dob)
     user.save_to_db()
 
     token = create_access_token(identity={'email': email, 'role': role, 'approved': approved})
@@ -90,10 +104,17 @@ def login():
 
     user_data = User.find_by_email(email)
     if not user_data or not User.check_password(user_data['password'], password):
+        User.increment_login_attempts(email)
         return jsonify({'message': 'Invalid credentials'}), 401
 
     if user_data['role'] == 'doctor' and not user_data.get('approved', False):
         return jsonify({'message': 'Doctor not approved by admin'}), 403
+
+    if user_data.get('locked_until') and user_data['locked_until'] > datetime.utcnow():
+        return jsonify({'message': f'Account locked until {user_data["locked_until"]}'}), 403
+
+    User.reset_login_attempts(email)
+    User.set_last_login(email)
 
     token = create_access_token(identity={'email': email, 'role': user_data['role'], 'approved': user_data.get('approved', False)})
     refresh_token = create_refresh_token(identity={'email': email, 'role': user_data['role'], 'approved': user_data.get('approved', False)})
@@ -115,7 +136,10 @@ def profile():
         'role': user['role'],
         'specialty': user.get('specialty'),
         'availability': user.get('availability'),
-        'approved': user.get('approved', False)
+        'approved': user.get('approved', False),
+        'profile_picture': user.get('profile_picture'),
+        'address': user.get('address'),
+        'dob': user.get('dob')
     }), 200
 
 @auth.route('/update-availability', methods=['PUT'])
@@ -277,9 +301,30 @@ def verify_2fa():
 @swag_from('../docs/get_doctors.yml')
 def get_doctors():
     doctors = User.find_doctors()
+    doctor_list = []
     for doctor in doctors:
-        doctor['_id'] = str(doctor['_id'])  # Convert ObjectId to string
-    return jsonify(doctors), 200
+        doctor_data = {
+            '_id': str(doctor['_id']),
+            'approved': doctor['approved'],
+            'availability': doctor['availability'],
+            'email': doctor['email'],
+            'email_verified': doctor['email_verified'],
+            'mfa_enabled': doctor['mfa_enabled'],
+            'phone': doctor['phone'],
+            'profile_picture': doctor.get('profile_picture'),
+            'role': doctor['role'],
+            'specialty': doctor['specialty'],
+            'username': doctor['username'],
+            'created_at': doctor.get('created_at'),
+            'updated_at': doctor.get('updated_at'),
+            'last_login': doctor.get('last_login'),
+            'address': doctor.get('address'),
+            'dob': doctor.get('dob'),
+            'login_attempts': doctor.get('login_attempts'),
+            'locked_until': doctor.get('locked_until')
+        }
+        doctor_list.append(doctor_data)
+    return jsonify(doctor_list), 200
 
 @auth.route('/available-doctors', methods=['GET'])
 @jwt_required()
@@ -289,3 +334,27 @@ def get_available_doctors():
     db = client.healthcare
     doctors = db.users.find({'role': 'doctor', 'approved': True}, {'_id': 0, 'username': 1, 'specialty': 1, 'availability': 1})
     return jsonify(list(doctors)), 200
+
+@auth.route('/profile', methods=['PUT'])
+@jwt_required()
+@swag_from('../docs/update_profile.yml')
+def update_profile():
+    current_user = get_jwt_identity()
+    data = request.get_json()
+    
+    user_data = User.find_by_email(current_user['email'])
+    if not user_data:
+        return jsonify({'message': 'User not found'}), 404
+    
+    updates = {
+        'username': data.get('username', user_data['username']),
+        'phone': data.get('phone', user_data['phone']),
+        'address': data.get('address', user_data.get('address')),
+        'dob': data.get('dob', user_data.get('dob')),
+        'profile_picture': data.get('profile_picture', user_data.get('profile_picture'))
+    }
+    
+    User.update_user(current_user['email'], updates)
+    
+    return jsonify({'message': 'Profile updated successfully'}), 200
+
