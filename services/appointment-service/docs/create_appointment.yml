@@ -24,7 +24,7 @@ parameters:
           example: "60d0fe4f5311236168a109ca"
         date_time:
           type: string
-          example: "2024-06-07 10:30:00"
+          example: "2024-06-07T10:30:00"
 responses:
   201:
     description: "Appointment created successfully"

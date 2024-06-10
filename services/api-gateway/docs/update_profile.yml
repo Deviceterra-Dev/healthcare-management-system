@@ -1,0 +1,54 @@
+swagger: "2.0"
+info:
+  description: "Update user profile"
+  version: "1.0.0"
+  title: "Update Profile"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+  - in: "body"
+    name: "body"
+    description: "User profile object that needs to be updated"
+    required: true
+    schema:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "johndoe"
+        phone:
+          type: string
+          example: "1234567890"
+        address:
+          type: string
+          example: "123 Main St, Anytown, USA"
+        dob:
+          type: string
+          format: date
+          example: "1990-01-01"
+        profile_picture:
+          type: string
+          example: "https://example.com/path/to/profile.jpg"
+responses:
+  200:
+    description: "Profile updated successfully"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Profile updated successfully"
+  400:
+    description: "Invalid input or user not found"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid input or user not found"

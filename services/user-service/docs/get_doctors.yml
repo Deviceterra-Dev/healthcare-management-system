@@ -1,0 +1,80 @@
+swagger: "2.0"
+info:
+  description: "Get all doctors"
+  version: "1.0.0"
+  title: "Get Doctors"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+produces:
+  - "application/json"
+responses:
+  200:
+    description: "List of doctors"
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+            example: "60f8c54e6c5b1c001e5e0600"
+          approved:
+            type: boolean
+            example: true
+          availability:
+            type: array
+            items:
+              type: string
+            example: ["Monday 10:00-14:00", "Wednesday 12:00-16:00"]
+          email:
+            type: string
+            example: "doctor@example.com"
+          email_verified:
+            type: boolean
+            example: false
+          mfa_enabled:
+            type: boolean
+            example: false
+          phone:
+            type: string
+            example: "1234567890"
+          profile_picture:
+            type: string
+            example: "http://example.com/profile.jpg"
+          role:
+            type: string
+            example: "doctor"
+          specialty:
+            type: string
+            example: "Cardiology"
+          username:
+            type: string
+            example: "johndoe"
+          created_at:
+            type: string
+            format: date-time
+            example: "2024-06-09T12:34:56Z"
+          updated_at:
+            type: string
+            format: date-time
+            example: "2024-06-09T12:34:56Z"
+          last_login:
+            type: string
+            format: date-time
+            example: "2024-06-09T12:34:56Z"
+          address:
+            type: string
+            example: "123 Main St, Anytown, USA"
+          dob:
+            type: string
+            format: date
+            example: "1990-01-01"
+          login_attempts:
+            type: integer
+            example: 0
+          locked_until:
+            type: string
+            format: date-time
+            example: "2024-06-10T12:34:56Z"

@@ -1,12 +1,12 @@
 swagger: "2.0"
 info:
-  description: "Approve or reject a doctor's registration"
+  description: "Approve or reject a doctor"
   version: "1.0.0"
   title: "Approve Doctor"
 security:
   - Bearer: []
 tags:
-  - "admin"
+  - "auth"
 consumes:
   - "application/json"
 produces:
@@ -14,7 +14,7 @@ produces:
 parameters:
   - in: "body"
     name: "body"
-    description: "Doctor approval object"
+    description: "Approval data"
     required: true
     schema:
       type: object
@@ -27,14 +27,6 @@ parameters:
           example: true
 responses:
   200:
-    description: "Doctor approved successfully"
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Doctor approved successfully"
-  403:
-    description: "Forbidden"
+    description: "Doctor approved or rejected successfully"
   404:
     description: "User not found or not a doctor"

@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "Update doctor availability"
+  description: "Update doctor's availability"
   version: "1.0.0"
   title: "Update Availability"
 security:
@@ -14,7 +14,7 @@ produces:
 parameters:
   - in: "body"
     name: "body"
-    description: "Doctor availability object"
+    description: "Availability data"
     required: true
     schema:
       type: object
@@ -23,29 +23,9 @@ parameters:
           type: array
           items:
             type: string
-            example: "Monday 09:00-17:00"
+          example: ["Monday 10:00-14:00", "Wednesday 12:00-16:00"]
 responses:
   200:
     description: "Availability updated successfully"
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Availability updated successfully"
   404:
     description: "User not found"
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "User not found"
-  401:
-    description: "Token is missing or invalid"
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Token is missing or invalid"

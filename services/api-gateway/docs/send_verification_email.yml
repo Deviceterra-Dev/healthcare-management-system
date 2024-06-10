@@ -1,8 +1,10 @@
 swagger: "2.0"
 info:
-  description: "API to send a verification email to the user"
+  description: "Send email verification"
   version: "1.0.0"
   title: "Send Verification Email"
+security:
+  - Bearer: []
 tags:
   - "auth"
 consumes:
@@ -12,7 +14,7 @@ produces:
 parameters:
   - in: "body"
     name: "body"
-    description: "Email object containing the email address to which the verification email will be sent"
+    description: "User email to send verification"
     required: true
     schema:
       type: object
@@ -22,6 +24,6 @@ parameters:
           example: "user@example.com"
 responses:
   200:
-    description: "Verification email sent successfully"
+    description: "Verification email sent"
   404:
     description: "User not found"

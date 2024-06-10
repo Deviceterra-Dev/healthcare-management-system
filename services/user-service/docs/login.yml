@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "User login"
+  description: "Login a user"
   version: "1.0.0"
-  title: "Login"
+  title: "User Login"
 tags:
   - "auth"
 consumes:
@@ -12,7 +12,7 @@ produces:
 parameters:
   - in: "body"
     name: "body"
-    description: "Login object"
+    description: "User login credentials"
     required: true
     schema:
       type: object
@@ -25,7 +25,7 @@ parameters:
           example: "password123"
 responses:
   200:
-    description: "User logged in successfully"
+    description: "Login successful"
     schema:
       type: object
       properties:
@@ -38,4 +38,4 @@ responses:
   401:
     description: "Invalid credentials"
   403:
-    description: "Doctor not approved by admin"
+    description: "Account locked or not approved"

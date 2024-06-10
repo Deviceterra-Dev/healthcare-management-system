@@ -37,7 +37,36 @@ swagger_config = {
     ]
 }
 
-swagger = Swagger(app, config=swagger_config)
+template = {
+    "swagger": "2.0",
+    "info": {
+        "title": "API Gateway",
+        "description": "API Gateway for the Healthcare Management System",
+        "contact": {
+            "responsibleOrganization": "My Company",
+            "responsibleDeveloper": "Developer Name",
+            "email": "developer@example.com",
+            "url": "www.example.com",
+        },
+        "termsOfService": "http://example.com/terms",
+        "version": "1.0"
+    },
+    "basePath": "/",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
+        }
+    }
+}
+
+swagger = Swagger(app, config=swagger_config, template=template)
 jwt_manager = JWTManager(app)
 
 def validate_token(token):
@@ -61,7 +90,9 @@ def authenticate_request():
     if any(request.path.startswith(path) for path in open_paths):
         return
 
-    token = request.headers.get('Authorization').split(" ")[1] if 'Authorization' in request.headers else None
+    token = request.headers.get('Authorization')
+    if token:
+        token = token.split(" ")[1] if ' ' in token else None
 
     if not token or not validate_token(token):
         return jsonify({'message': 'Token is missing or invalid!'}), 401
@@ -229,6 +260,33 @@ def update_availability():
     response = requests.put(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
 
+@app.route('/auth/update-profile', methods=['PUT'])
+@jwt_required()
+@swag_from('docs/update_profile.yml')
+def update_profile():
+    service_url = 'http://localhost:5000/auth/update-profile'
+    headers = {key: value for key, value in request.headers if key != 'Host'}
+    response = requests.put(service_url, json=request.get_json(), headers=headers)
+    return response.content, response.status_code, response.headers.items()
+
+@app.route('/auth/doctors', methods=['GET'])
+@jwt_required()
+@swag_from('docs/get_doctors.yml')
+def get_doctors():
+    service_url = 'http://localhost:5000/auth/doctors'
+    headers = {key: value for key, value in request.headers if key != 'Host'}
+    response = requests.get(service_url, headers=headers)
+    return response.content, response.status_code, response.headers.items()
+
+@app.route('/auth/available-doctors', methods=['GET'])
+@jwt_required()
+@swag_from('docs/get_available_doctors.yml')
+def get_available_doctors():
+    service_url = 'http://localhost:5000/auth/available-doctors'
+    headers = {key: value for key, value in request.headers if key != 'Host'}
+    response = requests.get(service_url, headers=headers)
+    return response.content, response.status_code, response.headers.items()
+
 # Appointment Service Endpoints
 @app.route('/appointments', methods=['POST'])
 @jwt_required()
@@ -273,6 +331,51 @@ def delete_appointment(appointment_id):
     service_url = f'http://localhost:5001/api/appointments/{appointment_id}'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.delete(service_url, headers=headers)
+    return response.content, response.status_code, response.headers.items()
+
+@app.route('/appointments/<appointment_id>/cancel', methods=['POST'])
+@jwt_required()
+@swag_from('docs/cancel_appointment.yml')
+def cancel_appointment(appointment_id):
+    service_url = f'http://localhost:5001/api/appointments/{appointment_id}/cancel'
+    headers = {key: value for key, value in request.headers if key != 'Host'}
+    response = requests.post(service_url, headers=headers)
+    return response.content, response.status_code, response.headers.items()
+
+@app.route('/appointments/<appointment_id>/reschedule', methods=['PUT'])
+@jwt_required()
+@swag_from('docs/reschedule_appointment.yml')
+def reschedule_appointment(appointment_id):
+    service_url = f'http://localhost:5001/api/appointments/{appointment_id}/reschedule'
+    headers = {key: value for key, value in request.headers if key != 'Host'}
+    response = requests.put(service_url, json=request.get_json(), headers=headers)
+    return response.content, response.status_code, response.headers.items()
+
+@app.route('/appointments/doctor-availability/<doctor_id>', methods=['GET'])
+@jwt_required()
+@swag_from('docs/get_doctor_availability.yml')
+def get_doctor_availability(doctor_id):
+    service_url = f'http://localhost:5000/auth/doctors/{doctor_id}/availability'
+    headers = {key: value for key, value in request.headers if key != 'Host'}
+    response = requests.get(service_url, headers=headers)
+    return response.content, response.status_code, response.headers.items()
+
+@app.route('/appointments/status/<appointment_id>', methods=['GET'])
+@jwt_required()
+@swag_from('docs/get_appointment_status.yml')
+def get_appointment_status(appointment_id):
+    service_url = f'http://localhost:5001/api/appointments/status/{appointment_id}'
+    headers = {key: value for key, value in request.headers if key != 'Host'}
+    response = requests.get(service_url, headers=headers)
+    return response.content, response.status_code, response.headers.items()
+
+@app.route('/appointments/search', methods=['GET'])
+@jwt_required()
+@swag_from('docs/search_appointments.yml')
+def search_appointments():
+    service_url = 'http://localhost:5001/api/appointments/search'
+    headers = {key: value for key, value in request.headers if key != 'Host'}
+    response = requests.get(service_url, headers=headers, params=request.args)
     return response.content, response.status_code, response.headers.items()
 
 if __name__ == '__main__':

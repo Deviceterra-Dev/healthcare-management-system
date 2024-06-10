@@ -1,17 +1,27 @@
-responses:
-  200:
-    description: "Verification email sent"
-  404:
-    description: "User not found"
+swagger: "2.0"
+info:
+  description: "Send verification email"
+  version: "1.0.0"
+  title: "Send Verification Email"
+tags:
+  - "auth"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
 parameters:
-  - name: body
-    in: body
-    required: True
+  - in: "body"
+    name: "body"
+    description: "Email data"
+    required: true
     schema:
       type: object
       properties:
         email:
           type: string
-          example: "johndoe@example.com"
-      required:
-        - email
+          example: "user@example.com"
+responses:
+  200:
+    description: "Verification email sent"
+  404:
+    description: "User not found"

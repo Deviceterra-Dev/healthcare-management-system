@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "Create a new appointment"
+  description: "Reschedule an appointment"
   version: "1.0.0"
-  title: "Create Appointment"
+  title: "Reschedule Appointment"
 security:
   - Bearer: []
 tags:
@@ -12,28 +12,30 @@ consumes:
 produces:
   - "application/json"
 parameters:
+  - in: "path"
+    name: "appointment_id"
+    type: "string"
+    required: true
+    description: "ID of the appointment to reschedule"
   - in: "body"
     name: "body"
-    description: "Appointment object that needs to be added"
+    description: "New date and time for the appointment"
     required: true
     schema:
       type: object
       properties:
-        doctor_id:
+        new_date_time:
           type: string
-          example: "60d0fe4f5311236168a109ca"
-        date_time:
-          type: string
-          example: "2024-06-07 10:30:00"
+          example: "2024-06-08T14:30:00"
 responses:
-  201:
-    description: "Appointment created successfully"
+  200:
+    description: "Appointment rescheduled successfully"
     schema:
       type: object
       properties:
         message:
           type: string
-          example: "Appointment created successfully"
+          example: "Appointment rescheduled successfully"
   400:
     description: "Invalid date format or date and time in the past"
   401:

@@ -18,6 +18,10 @@ parameters:
     required: true
     schema:
       type: object
+      required:
+        - email
+        - password
+        - role
       properties:
         email:
           type: string
@@ -42,6 +46,18 @@ parameters:
           items:
             type: string
           example: ["Monday 10:00-14:00", "Wednesday 12:00-16:00"]
+        profile_picture:
+          type: string
+          example: "http://example.com/path/to/profile_picture.jpg"
+        mfa_enabled:
+          type: boolean
+          example: false
+        email_verified:
+          type: boolean
+          example: false
+        approved:
+          type: boolean
+          example: true
 responses:
   201:
     description: "User registered successfully"

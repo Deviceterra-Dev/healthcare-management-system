@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   description: "Get user profile"
   version: "1.0.0"
-  title: "Profile"
+  title: "User Profile"
 security:
   - Bearer: []
 tags:
@@ -11,7 +11,7 @@ produces:
   - "application/json"
 responses:
   200:
-    description: "User profile retrieved successfully"
+    description: "Profile retrieved successfully"
     schema:
       type: object
       properties:
@@ -38,5 +38,15 @@ responses:
         approved:
           type: boolean
           example: true
+        profile_picture:
+          type: string
+          example: "http://example.com/profile.jpg"
+        address:
+          type: string
+          example: "123 Main St, Anytown, USA"
+        dob:
+          type: string
+          format: date
+          example: "1990-01-01"
   404:
     description: "User not found"
