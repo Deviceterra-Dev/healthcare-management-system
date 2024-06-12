@@ -26,12 +26,14 @@ class User:
         self.locked_until = None
 
     def save_to_db(self):
+        """Save the user to the database."""
         client = MongoClient(current_app.config['MONGO_URI'])
         db = client.healthcare
         users = db.users
         users.insert_one(self.to_dict())
 
     def to_dict(self):
+        """Convert the user instance to a dictionary for MongoDB insertion."""
         return {
             'email': self.email,
             'password': self.password,
@@ -55,6 +57,7 @@ class User:
 
     @staticmethod
     def find_by_email(email):
+        """Find a user by email."""
         client = MongoClient(current_app.config['MONGO_URI'])
         db = client.healthcare
         users = db.users
@@ -62,6 +65,7 @@ class User:
 
     @staticmethod
     def find_by_username(username):
+        """Find a user by username."""
         client = MongoClient(current_app.config['MONGO_URI'])
         db = client.healthcare
         users = db.users
@@ -69,6 +73,7 @@ class User:
     
     @staticmethod
     def find_by_id(user_id):
+        """Find a user by ID."""
         client = MongoClient(current_app.config['MONGO_URI'])
         db = client.healthcare
         users = db.users
@@ -79,6 +84,7 @@ class User:
 
     @staticmethod
     def find_doctors():
+        """Find all approved doctors."""
         client = MongoClient(current_app.config['MONGO_URI'])
         db = client.healthcare
         users = db.users
@@ -86,10 +92,12 @@ class User:
 
     @staticmethod
     def check_password(stored_password, provided_password):
+        """Check if the provided password matches the stored password."""
         return check_password_hash(stored_password, provided_password)
 
     @staticmethod
     def update_user(email, updates):
+        """Update user details."""
         updates['updated_at'] = datetime.utcnow()
         client = MongoClient(current_app.config['MONGO_URI'])
         db = client.healthcare
@@ -98,6 +106,7 @@ class User:
 
     @staticmethod
     def increment_login_attempts(email):
+        """Increment the login attempts for a user and lock the account if necessary."""
         client = MongoClient(current_app.config['MONGO_URI'])
         db = client.healthcare
         users = db.users
@@ -111,6 +120,7 @@ class User:
     
     @staticmethod
     def reset_login_attempts(email):
+        """Reset the login attempts for a user."""
         client = MongoClient(current_app.config['MONGO_URI'])
         db = client.healthcare
         users = db.users
@@ -118,6 +128,7 @@ class User:
     
     @staticmethod
     def set_last_login(email):
+        """Set the last login time for a user."""
         client = MongoClient(current_app.config['MONGO_URI'])
         db = client.healthcare
         users = db.users

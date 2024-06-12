@@ -11,12 +11,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flasgger import swag_from
 from datetime import datetime
 
+# Blueprint for authentication routes
 auth = Blueprint('auth', __name__)
 
 @auth.route('/doctors/<doctor_id>/availability', methods=['GET'])
 @jwt_required()
 @swag_from('../docs/get_doctor_availability.yml')
 def get_doctor_availability(doctor_id):
+    """
+    Get availability of a doctor by doctor_id.
+    Requires JWT token.
+    """
     user = User.find_by_id(doctor_id)
     if not user or user['role'] != 'doctor':
         return jsonify({'message': 'Doctor not found'}), 404
@@ -28,6 +33,10 @@ def get_doctor_availability(doctor_id):
 @auth.route('/register', methods=['POST'])
 @swag_from('../docs/register.yml')
 def register():
+    """
+    Register a new user.
+    Expects JSON data with email, password, username, phone, role, specialty, address, dob.
+    """
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -51,9 +60,14 @@ def register():
 
 @auth.route('/admin/register', methods=['POST'])
 @jwt_required()
-@role_required('admin')
+@role_required('superadmin')  # Only superadmin can create admin
 @swag_from('../docs/admin_register.yml')
 def admin_register():
+    """
+    Register a new admin user.
+    Requires JWT token with superadmin role.
+    Expects JSON data with email, password, username, phone.
+    """
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -77,6 +91,10 @@ def admin_register():
 @role_required('admin')
 @swag_from('../docs/admin_only.yml')
 def admin_only():
+    """
+    Endpoint accessible only to admin users.
+    Requires JWT token with admin role.
+    """
     return jsonify({'message': 'Welcome, admin!'}), 200
 
 @auth.route('/approve-doctor', methods=['POST'])
@@ -84,6 +102,11 @@ def admin_only():
 @role_required('admin')
 @swag_from('../docs/approve_doctor.yml')
 def approve_doctor():
+    """
+    Approve or reject a doctor.
+    Requires JWT token with admin role.
+    Expects JSON data with email and approve (boolean).
+    """
     data = request.get_json()
     email = data.get('email')
     approve = data.get('approve', True)
@@ -98,6 +121,10 @@ def approve_doctor():
 @auth.route('/login', methods=['POST'])
 @swag_from('../docs/login.yml')
 def login():
+    """
+    Login a user.
+    Expects JSON data with email and password.
+    """
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -124,6 +151,10 @@ def login():
 @jwt_required()
 @swag_from('../docs/profile.yml')
 def profile():
+    """
+    Get the profile of the logged-in user.
+    Requires JWT token.
+    """
     current_user = get_jwt_identity()
     user = User.find_by_email(current_user['email'])
     if not user:
@@ -147,6 +178,11 @@ def profile():
 @role_required('doctor')
 @swag_from('../docs/update_availability.yml')
 def update_availability():
+    """
+    Update the availability of a doctor.
+    Requires JWT token with doctor role.
+    Expects JSON data with availability.
+    """
     current_user = get_jwt_identity()
     data = request.get_json()
     availability = data.get('availability', [])
@@ -161,6 +197,10 @@ def update_availability():
 @auth.route('/send-verification-email', methods=['POST'])
 @swag_from('../docs/send_verification_email.yml')
 def send_verification_email():
+    """
+    Send a verification email to a user.
+    Expects JSON data with email.
+    """
     data = request.get_json()
     email = data.get('email')
 
@@ -177,6 +217,10 @@ def send_verification_email():
 @auth.route('/verify-email', methods=['GET'])
 @swag_from('../docs/verify_email.yml')
 def verify_email():
+    """
+    Verify a user's email using a token.
+    Expects token as query parameter.
+    """
     token = request.args.get('token')
 
     try:
@@ -198,6 +242,11 @@ def verify_email():
 @jwt_required()
 @swag_from('../docs/setup_mfa.yml')
 def setup_mfa():
+    """
+    Set up MFA for the logged-in user.
+    Requires JWT token.
+    Expects JSON data with mfa_enabled.
+    """
     current_user = get_jwt_identity()
     data = request.get_json()
     mfa_enabled = data.get('mfa_enabled')
@@ -214,6 +263,10 @@ def setup_mfa():
 @jwt_required(refresh=True)
 @swag_from('../docs/refresh.yml')
 def refresh():
+    """
+    Refresh the JWT token.
+    Requires JWT refresh token.
+    """
     current_user = get_jwt_identity()
     new_token = create_access_token(identity=current_user)
     return jsonify({'token': new_token}), 200
@@ -222,6 +275,10 @@ def refresh():
 @jwt_required()
 @swag_from('../docs/logout.yml')
 def logout():
+    """
+    Logout the user.
+    Requires JWT token.
+    """
     jti = get_jwt()['jti']
     # TODO: Add token to blacklist (requires implementation)
     return jsonify({'message': 'Successfully logged out'}), 200
@@ -230,6 +287,11 @@ def logout():
 @jwt_required()
 @swag_from('../docs/change_password.yml')
 def change_password():
+    """
+    Change the password of the logged-in user.
+    Requires JWT token.
+    Expects JSON data with current_password and new_password.
+    """
     current_user = get_jwt_identity()
     data = request.get_json()
     current_password = data.get('current_password')
@@ -247,6 +309,10 @@ def change_password():
 @auth.route('/forgot-password', methods=['POST'])
 @swag_from('../docs/forgot_password.yml')
 def forgot_password():
+    """
+    Send a password reset email.
+    Expects JSON data with email.
+    """
     data = request.get_json()
     email = data.get('email')
 
@@ -262,6 +328,10 @@ def forgot_password():
 @auth.route('/confirm-reset-password', methods=['POST'])
 @swag_from('../docs/confirm_reset_password.yml')
 def confirm_reset_password():
+    """
+    Reset the password using a token.
+    Expects JSON data with token and new_password.
+    """
     data = request.get_json()
     token = data.get('token')
     new_password = data.get('new_password')
@@ -283,6 +353,10 @@ def confirm_reset_password():
 @jwt_required()
 @swag_from('../docs/setup_2fa.yml')
 def setup_2fa():
+    """
+    Set up 2FA for the logged-in user.
+    Requires JWT token.
+    """
     current_user = get_jwt_identity()
     # TODO: Implement 2FA setup logic, e.g., generating a QR code or secret key
     return jsonify({'message': '2FA setup successful'}), 200
@@ -291,6 +365,11 @@ def setup_2fa():
 @jwt_required()
 @swag_from('../docs/verify_2fa.yml')
 def verify_2fa():
+    """
+    Verify 2FA for the logged-in user.
+    Requires JWT token.
+    Expects JSON data.
+    """
     current_user = get_jwt_identity()
     data = request.get_json()
     # TODO: Implement 2FA verification logic, e.g., validating the provided 2FA code
@@ -300,6 +379,10 @@ def verify_2fa():
 @jwt_required()
 @swag_from('../docs/get_doctors.yml')
 def get_doctors():
+    """
+    Get a list of all approved doctors.
+    Requires JWT token.
+    """
     doctors = User.find_doctors()
     doctor_list = []
     for doctor in doctors:
@@ -330,6 +413,10 @@ def get_doctors():
 @jwt_required()
 @swag_from('../docs/get_available_doctors.yml')
 def get_available_doctors():
+    """
+    Get a list of all available doctors.
+    Requires JWT token.
+    """
     client = MongoClient(current_app.config['MONGO_URI'])
     db = client.healthcare
     doctors = db.users.find({'role': 'doctor', 'approved': True}, {'_id': 0, 'username': 1, 'specialty': 1, 'availability': 1})
@@ -339,6 +426,11 @@ def get_available_doctors():
 @jwt_required()
 @swag_from('../docs/update_profile.yml')
 def update_profile():
+    """
+    Update the profile of the logged-in user.
+    Requires JWT token.
+    Expects JSON data with username, phone, address, dob, profile_picture.
+    """
     current_user = get_jwt_identity()
     data = request.get_json()
     
@@ -357,4 +449,3 @@ def update_profile():
     User.update_user(current_user['email'], updates)
     
     return jsonify({'message': 'Profile updated successfully'}), 200
-
