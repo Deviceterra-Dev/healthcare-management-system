@@ -114,14 +114,14 @@ def role_required(role):
 @app.route('/auth/register', methods=['POST'])
 @swag_from('docs/register.yml')
 def register():
-    service_url = 'http://localhost:5000/auth/register'
+    service_url = 'http://user-service:5000/auth/register'
     response = requests.post(service_url, json=request.get_json())
     return response.content, response.status_code, response.headers.items()
 
 @app.route('/auth/login', methods=['POST'])
 @swag_from('docs/login.yml')
 def login():
-    service_url = 'http://localhost:5000/auth/login'
+    service_url = 'http://user-service:5000/auth/login'
     response = requests.post(service_url, json=request.get_json())
     return response.content, response.status_code, response.headers.items()
 
@@ -129,7 +129,7 @@ def login():
 @jwt_required()
 @swag_from('docs/profile.yml')
 def profile():
-    service_url = 'http://localhost:5000/auth/profile'
+    service_url = 'http://user-service:5000/auth/profile'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.get(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -138,7 +138,7 @@ def profile():
 @jwt_required()
 @swag_from('docs/send_verification_email.yml')
 def send_verification_email():
-    service_url = 'http://localhost:5000/auth/send-verification-email'
+    service_url = 'http://user-service:5000/auth/send-verification-email'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -147,7 +147,7 @@ def send_verification_email():
 @jwt_required()
 @swag_from('docs/verify_email.yml')
 def verify_email():
-    service_url = 'http://localhost:5000/auth/verify-email'
+    service_url = 'http://user-service:5000/auth/verify-email'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.get(service_url, headers=headers, params=request.args)
     return response.content, response.status_code, response.headers.items()
@@ -157,7 +157,7 @@ def verify_email():
 @role_required('admin')
 @swag_from('docs/admin_only.yml')
 def admin_only():
-    service_url = 'http://localhost:5000/auth/admin-only'
+    service_url = 'http://user-service:5000/auth/admin-only'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.get(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -166,7 +166,7 @@ def admin_only():
 @jwt_required()
 @swag_from('docs/setup_mfa.yml')
 def setup_mfa():
-    service_url = 'http://localhost:5000/auth/setup-mfa'
+    service_url = 'http://user-service:5000/auth/setup-mfa'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -175,7 +175,7 @@ def setup_mfa():
 @jwt_required(refresh=True)
 @swag_from('docs/refresh.yml')
 def refresh():
-    service_url = 'http://localhost:5000/auth/refresh'
+    service_url = 'http://user-service:5000/auth/refresh'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -184,7 +184,7 @@ def refresh():
 @jwt_required()
 @swag_from('docs/logout.yml')
 def logout():
-    service_url = 'http://localhost:5000/auth/logout'
+    service_url = 'http://user-service:5000/auth/logout'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -193,7 +193,7 @@ def logout():
 @jwt_required()
 @swag_from('docs/change_password.yml')
 def change_password():
-    service_url = 'http://localhost:5000/auth/change-password'
+    service_url = 'http://user-service:5000/auth/change-password'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -201,14 +201,14 @@ def change_password():
 @app.route('/auth/forgot-password', methods=['POST'])
 @swag_from('docs/forgot_password.yml')
 def forgot_password():
-    service_url = 'http://localhost:5000/auth/forgot-password'
+    service_url = 'http://user-service:5000/auth/forgot-password'
     response = requests.post(service_url, json=request.get_json())
     return response.content, response.status_code, response.headers.items()
 
 @app.route('/auth/confirm-reset-password', methods=['POST'])
 @swag_from('docs/confirm_reset_password.yml')
 def confirm_reset_password():
-    service_url = 'http://localhost:5000/auth/confirm-reset-password'
+    service_url = 'http://user-service:5000/auth/confirm-reset-password'
     response = requests.post(service_url, json=request.get_json())
     return response.content, response.status_code, response.headers.items()
 
@@ -216,7 +216,7 @@ def confirm_reset_password():
 @jwt_required()
 @swag_from('docs/setup_2fa.yml')
 def setup_2fa():
-    service_url = 'http://localhost:5000/auth/setup-2fa'
+    service_url = 'http://user-service:5000/auth/setup-2fa'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -225,7 +225,7 @@ def setup_2fa():
 @jwt_required()
 @swag_from('docs/verify_2fa.yml')
 def verify_2fa():
-    service_url = 'http://localhost:5000/auth/verify-2fa'
+    service_url = 'http://user-service:5000/auth/verify-2fa'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -235,7 +235,7 @@ def verify_2fa():
 @role_required('admin')
 @swag_from('docs/admin_register.yml')
 def admin_register():
-    service_url = 'http://localhost:5000/auth/admin/register'
+    service_url = 'http://user-service:5000/auth/admin/register'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -245,7 +245,7 @@ def admin_register():
 @role_required('admin')
 @swag_from('docs/approve_doctor.yml')
 def approve_doctor():
-    service_url = 'http://localhost:5000/auth/approve-doctor'
+    service_url = 'http://user-service:5000/auth/approve-doctor'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -255,7 +255,7 @@ def approve_doctor():
 @role_required('doctor')
 @swag_from('docs/update_availability.yml')
 def update_availability():
-    service_url = 'http://localhost:5000/auth/update-availability'
+    service_url = 'http://user-service:5000/auth/update-availability'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.put(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -264,7 +264,7 @@ def update_availability():
 @jwt_required()
 @swag_from('docs/update_profile.yml')
 def update_profile():
-    service_url = 'http://localhost:5000/auth/update-profile'
+    service_url = 'http://user-service:5000/auth/update-profile'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.put(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -273,7 +273,7 @@ def update_profile():
 @jwt_required()
 @swag_from('docs/get_doctors.yml')
 def get_doctors():
-    service_url = 'http://localhost:5000/auth/doctors'
+    service_url = 'http://user-service:5000/auth/doctors'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.get(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -282,7 +282,7 @@ def get_doctors():
 @jwt_required()
 @swag_from('docs/get_available_doctors.yml')
 def get_available_doctors():
-    service_url = 'http://localhost:5000/auth/available-doctors'
+    service_url = 'http://user-service:5000/auth/available-doctors'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.get(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -292,7 +292,7 @@ def get_available_doctors():
 @jwt_required()
 @swag_from('docs/create_appointment.yml')
 def create_appointment():
-    service_url = 'http://localhost:5001/api/appointments'
+    service_url = 'http://appointment-service:5001/api/appointments'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -301,7 +301,7 @@ def create_appointment():
 @jwt_required()
 @swag_from('docs/get_appointment.yml')
 def get_appointment(appointment_id):
-    service_url = f'http://localhost:5001/api/appointments/{appointment_id}'
+    service_url = f'http://appointment-service:5001/api/appointments/{appointment_id}'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.get(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -310,7 +310,7 @@ def get_appointment(appointment_id):
 @jwt_required()
 @swag_from('docs/get_user_appointments.yml')
 def get_user_appointments():
-    service_url = 'http://localhost:5001/api/appointments'
+    service_url = 'http://appointment-service:5001/api/appointments'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.get(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -319,7 +319,7 @@ def get_user_appointments():
 @jwt_required()
 @swag_from('docs/update_appointment.yml')
 def update_appointment(appointment_id):
-    service_url = f'http://localhost:5001/api/appointments/{appointment_id}'
+    service_url = f'http://appointment-service:5001/api/appointments/{appointment_id}'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.put(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -328,7 +328,7 @@ def update_appointment(appointment_id):
 @jwt_required()
 @swag_from('docs/delete_appointment.yml')
 def delete_appointment(appointment_id):
-    service_url = f'http://localhost:5001/api/appointments/{appointment_id}'
+    service_url = f'http://appointment-service:5001/api/appointments/{appointment_id}'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.delete(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -337,7 +337,7 @@ def delete_appointment(appointment_id):
 @jwt_required()
 @swag_from('docs/cancel_appointment.yml')
 def cancel_appointment(appointment_id):
-    service_url = f'http://localhost:5001/api/appointments/{appointment_id}/cancel'
+    service_url = f'http://appointment-service:5001/api/appointments/{appointment_id}/cancel'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.post(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -346,7 +346,7 @@ def cancel_appointment(appointment_id):
 @jwt_required()
 @swag_from('docs/reschedule_appointment.yml')
 def reschedule_appointment(appointment_id):
-    service_url = f'http://localhost:5001/api/appointments/{appointment_id}/reschedule'
+    service_url = f'http://appointment-service:5001/api/appointments/{appointment_id}/reschedule'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.put(service_url, json=request.get_json(), headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -355,7 +355,7 @@ def reschedule_appointment(appointment_id):
 @jwt_required()
 @swag_from('docs/get_doctor_availability.yml')
 def get_doctor_availability(doctor_id):
-    service_url = f'http://localhost:5000/auth/doctors/{doctor_id}/availability'
+    service_url = f'http://user-service:5000/auth/doctors/{doctor_id}/availability'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.get(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -364,7 +364,7 @@ def get_doctor_availability(doctor_id):
 @jwt_required()
 @swag_from('docs/get_appointment_status.yml')
 def get_appointment_status(appointment_id):
-    service_url = f'http://localhost:5001/api/appointments/status/{appointment_id}'
+    service_url = f'http://appointment-service:5001/api/appointments/status/{appointment_id}'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.get(service_url, headers=headers)
     return response.content, response.status_code, response.headers.items()
@@ -373,10 +373,10 @@ def get_appointment_status(appointment_id):
 @jwt_required()
 @swag_from('docs/search_appointments.yml')
 def search_appointments():
-    service_url = 'http://localhost:5001/api/appointments/search'
+    service_url = 'http://appointment-service:5001/api/appointments/search'
     headers = {key: value for key, value in request.headers if key != 'Host'}
     response = requests.get(service_url, headers=headers, params=request.args)
     return response.content, response.status_code, response.headers.items()
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run(debug=True, host='0.0.0.0', port=8000)

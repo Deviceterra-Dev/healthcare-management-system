@@ -4,7 +4,15 @@ from functools import wraps
 from app.models import User
 import logging
 
-def role_required(role):
+# Define role hierarchy
+ROLE_HIERARCHY = {
+    'superadmin': 3,
+    'admin': 2,
+    'doctor': 1,
+    'patient': 0
+}
+
+def role_required(required_role):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -12,7 +20,7 @@ def role_required(role):
                 verify_jwt_in_request()
                 current_user = get_jwt_identity()
                 user = User.find_by_email(current_user['email'])
-                if not user or user['role'] != role:
+                if not user or ROLE_HIERARCHY.get(user['role'], -1) < ROLE_HIERARCHY.get(required_role, -1):
                     return jsonify({'message': 'You do not have permission to access this resource'}), 403
                 return f(*args, **kwargs)
             except Exception as e:

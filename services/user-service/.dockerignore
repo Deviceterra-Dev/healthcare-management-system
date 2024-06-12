@@ -1,0 +1,5 @@
+venv
+sequencediagram
+Procfile
+Dockerfile
+docker-compose.yml
