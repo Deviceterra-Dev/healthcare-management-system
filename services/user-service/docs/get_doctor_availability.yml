@@ -1,0 +1,39 @@
+swagger: "2.0"
+info:
+  description: "Get a doctor's availability"
+  version: "1.0.0"
+  title: "Get Doctor Availability"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+produces:
+  - "application/json"
+parameters:
+  - in: "path"
+    name: "doctor_id"
+    type: "string"
+    required: true
+    description: "ID of the doctor whose availability is to be checked"
+responses:
+  200:
+    description: "Doctor availability fetched successfully"
+    schema:
+      type: object
+      properties:
+        availability:
+          type: array
+          items:
+            type: string
+          example: [
+            "Monday 10:00-14:00",
+            "Wednesday 12:00-16:00",
+            "Friday 10:00-14:00",
+            "Saturday 12:00-16:00"
+          ]
+  404:
+    description: "Doctor not found"
+  401:
+    description: "Token is missing or invalid"
+  400:
+    description: "Doctor ID is required or User is not a doctor"

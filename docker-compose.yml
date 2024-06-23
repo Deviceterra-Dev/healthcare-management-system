@@ -1,34 +1,69 @@
+# Docker Compose configuration file version
 version: '3.8'
 
 services:
+  # Definition for the user-service
   user-service:
+    # Specify the build context for the user-service
     build: ./services/user-service
+    # Map port 5000 on the host to port 5000 in the container
     ports:
       - "5000:5000"
+    # Environment variables to be used within the user-service container
     environment:
       - SECRET_KEY=your_secret_key
       - MONGO_URI=mongodb://mongo:27017/user_service
       - JWT_SECRET_KEY=your_jwt_secret_key
+      - FLASK_ENV=development
+      - SUPERADMIN_EMAIL=superadmin@example.com  # Super admin email
+      - SUPERADMIN_PASSWORD=superadminpassword  # Super admin password
+    # Define service dependencies
     depends_on:
       - mongo
 
+  # Definition for the api-gateway service
+  api-gateway:
+    # Specify the build context for the api-gateway service
+    build:
+      context: ./services/api-gateway
+    # Environment variables to be used within the api-gateway container
+    environment:
+      - JWT_SECRET_KEY=your_jwt_secret_key
+    # Map port 8000 on the host to port 8000 in the container
+    ports:
+      - "8000:8000"
+    # Define service dependencies
+    depends_on:
+      - user-service
+
+  # Definition for the appointment-service
   appointment-service:
+    # Specify the build context for the appointment-service
     build: ./services/appointment-service
+    # Map port 5001 on the host to port 5001 in the container
     ports:
       - "5001:5001"
+    # Environment variables to be used within the appointment-service container
     environment:
       - SECRET_KEY=your_secret_key
       - MONGO_URI=mongodb://mongo:27017/appointment_service
       - JWT_SECRET_KEY=your_jwt_secret_key
+      - FLASK_ENV=development
+    # Define service dependencies
     depends_on:
       - mongo
 
+  # Definition for the mongo service
   mongo:
+    # Use the official MongoDB image from Docker Hub
     image: mongo:latest
+    # Map port 27017 on the host to port 27017 in the container
     ports:
       - "27017:27017"
+    # Define a named volume for MongoDB data persistence
     volumes:
       - mongo_data:/data/db
 
+# Define named volumes used by the services
 volumes:
   mongo_data:

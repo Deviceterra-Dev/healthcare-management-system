@@ -1,307 +1,134 @@
+Here's the Markdown content for your `README.md` file. You can copy and paste this directly into your `README.md` file.
 
-# Healthcare Management System
+# User Service Microservice
 
-
-## Table of Contents
-
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Running the Application](#running-the-application)
-- [API Endpoints](#api-endpoints)
-  - [User Registration](#user-registration)
-  - [User Login](#user-login)
-  - [Get User Profile](#get-user-profile)
-  - [Update User Profile](#update-user-profile)
-  - [Request Password Reset](#request-password-reset)
-  - [Reset Password](#reset-password)
-  - [Send Verification Email](#send-verification-email)
-  - [Verify Email](#verify-email)
-  - [Admin-Only Endpoint](#admin-only-endpoint)
-  - [Setup Multi-Factor Authentication (MFA)](#setup-multi-factor-authentication-mfa)
-- [Testing the Endpoints](#testing-the-endpoints)
-- [License](#license)
+This is the User Service microservice for the Healthcare Management System. It provides user authentication and authorization functionalities, including JWT-based authentication, role-based access control, and support for multi-factor authentication (MFA).
 
 ## Features
 
-- User Registration
-- User Login
-- User Profile Management
-- Password Reset
-- Email Verification
-- Multi-Factor Authentication (MFA)
-- Role-Based Access Control (RBAC)
+- User registration
+- User login
+- JWT-based authentication
+- Role-based access control (RBAC) with roles: Admin, Patient, Doctor
+- Multi-factor authentication (MFA)
+- Password reset and change
+- Email verification
+- Swagger UI for API documentation
 
-## Prerequisites
+## Setup
+
+### Prerequisites
 
 - Python 3.8+
 - MongoDB
-- Flask
-- Postman (for testing the API endpoints)
+- pip (Python package installer)
 
-## Installation
+### Installation
 
-1. **Clone the Repository**
-
+1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/healthcare-system.git
-   cd healthcare-system
+   git clone https://github.com/yourusername/healthcare-management-system.git
+   cd healthcare-management-system/services/user-service
    ```
 
-2. **Set Up Virtual Environment**
-
+2. **Create and activate a virtual environment**:
    ```bash
    python -m venv venv
-   venv\Scripts\activate  # On Windows
+   source venv/bin/activate  # On Windows, use `venv\\Scripts\\activate`
    ```
 
-3. **Install Dependencies**
-
+3. **Install the dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Create a `.env` File**
-
-   Create a `.env` file in the root of the project directory with the following content:
-
-   ```env
-   SECRET_KEY=your_secret_key
+4. **Set up environment variables**:
+   Create a `.env` file in the root of the `user-service` directory and add the following:
+   ```plaintext
+   FLASK_APP=run.py
+   FLASK_ENV=development
    MONGO_URI=mongodb://localhost:27017/healthcare
-   JWT_SECRET=your_jwt_secret
+   JWT_SECRET_KEY=your_jwt_secret_key
    ```
 
-5. **Ensure MongoDB is Running**
+### Running the Application
 
-   Start the MongoDB server:
-
+1. **Start the Flask application**:
    ```bash
-   mongod
+   flask run
    ```
 
-## Running the Application
-
-1. **Activate the Virtual Environment**
-
-   ```bash
-   venv\Scripts\activate  # On Windows
-   ```
-
-2. **Run the Flask Application**
-
-   ```bash
-   python run.py
-   ```
-
-3. **Access the Application**
-
-   The application will be running at `http://127.0.0.1:5000`.
+2. **Access the Swagger UI**:
+   Open your web browser and go to `http://localhost:5000/apidocs/` to access the Swagger UI and view the API documentation.
 
 ## API Endpoints
 
-### User Registration
+### Auth
+- `POST /auth/register`: Register a new user
+- `POST /auth/login`: User login
+- `POST /auth/refresh`: Refresh JWT token
+- `POST /auth/logout`: Logout user
+- `POST /auth/change-password`: Change user password
+- `POST /auth/forgot-password`: Request password reset email
+- `POST /auth/confirm-reset-password`: Reset password using token
+- `POST /auth/send-verification-email`: Send email verification link
+- `GET /auth/verify-email`: Verify email using token
+- `POST /auth/setup-mfa`: Set up multi-factor authentication (MFA)
+- `POST /auth/verify-2fa`: Verify MFA code
 
-**Endpoint:** `POST /api/auth/register`  
-**Headers:** `Content-Type: application/json`  
-**Body:**
+### Admin
+- `GET /auth/admin-only`: Admin-only access
 
-```json
-{
-  "username": "testuser",
-  "password": "password123",
-  "email": "testuser@example.com",
-  "phone": "1234567890",
-  "role": "patient"
-}
+### Profile
+- `GET /auth/profile`: Get user profile
+
+## Project Structure
+
+```
+healthcare-management-system/
+├── services/
+│   ├── user-service/
+│   │   ├── app/
+│   │   │   ├── __init__.py
+│   │   │   ├── models.py
+│   │   │   ├── routes.py
+│   │   │   ├── middlewares.py
+│   │   │   ├── utils.py
+│   │   │   └── swagger.py
+│   │   ├── docs/
+│   │   │   ├── register.yml
+│   │   │   ├── login.yml
+│   │   │   ├── profile.yml
+│   │   │   ├── send_verification_email.yml
+│   │   │   ├── verify_email.yml
+│   │   │   ├── admin_only.yml
+│   │   │   ├── setup_mfa.yml
+│   │   │   ├── refresh.yml
+│   │   │   ├── logout.yml
+│   │   │   ├── change_password.yml
+│   │   │   ├── forgot_password.yml
+│   │   │   ├── confirm_reset_password.yml
+│   │   │   ├── setup_2fa.yml
+│   │   │   └── verify_2fa.yml
+│   │   ├── config.py
+│   │   ├── docker-compose.yml
+│   │   ├── Dockerfile
+│   │   ├── Procfile
+│   │   ├── README.md
+│   │   ├── requirements.txt
+│   │   └── run.py
 ```
 
-**Response:**
+## Testing
 
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
+To run the tests, use the following command:
+```bash
+pytest
 ```
-
-### User Login
-
-**Endpoint:** `POST /api/auth/login`  
-**Headers:** `Content-Type: application/json`  
-**Body:**
-
-```json
-{
-  "username": "testuser",
-  "password": "password123"
-}
-```
-
-**Response:**
-
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
-
-### Get User Profile
-
-**Endpoint:** `GET /api/auth/profile`  
-**Headers:** `Authorization: Bearer {token}`  
-
-**Response:**
-
-```json
-{
-  "username": "testuser",
-  "email": "testuser@example.com",
-  "phone": "1234567890",
-  "role": "patient",
-  "profile_picture": null,
-  "mfa_enabled": false,
-  "email_verified": false
-}
-```
-
-### Update User Profile
-
-**Endpoint:** `PUT /api/auth/profile`  
-**Headers:** `Authorization: Bearer {token}`, `Content-Type: application/json`  
-**Body:**
-
-```json
-{
-  "email": "newemail@example.com",
-  "phone": "0987654321",
-  "profile_picture": "new_profile_picture_url"
-}
-```
-
-**Response:**
-
-```json
-{
-  "message": "Profile updated successfully"
-}
-```
-
-### Request Password Reset
-
-**Endpoint:** `POST /api/auth/request-reset-password`  
-**Headers:** `Content-Type: application/json`  
-**Body:**
-
-```json
-{
-  "email": "testuser@example.com"
-}
-```
-
-**Response:**
-
-```json
-{
-  "message": "Password reset email sent"
-}
-```
-
-### Reset Password
-
-**Endpoint:** `POST /api/auth/reset-password`  
-**Headers:** `Content-Type: application/json`  
-**Body:**
-
-```json
-{
-  "token": "reset_token_received_via_email",
-  "new_password": "newpassword123"
-}
-```
-
-**Response:**
-
-```json
-{
-  "message": "Password has been reset successfully"
-}
-```
-
-### Send Verification Email
-
-**Endpoint:** `POST /api/auth/send-verification-email`  
-**Headers:** `Content-Type: application/json`  
-**Body:**
-
-```json
-{
-  "email": "testuser@example.com"
-}
-```
-
-**Response:**
-
-```json
-{
-  "message": "Verification email sent"
-}
-```
-
-### Verify Email
-
-**Endpoint:** `GET /api/auth/verify-email`  
-**Parameters:** `token=verification_token_received_via_email`  
-
-**Response:**
-
-```json
-{
-  "message": "Email has been verified successfully"
-}
-```
-
-### Admin-Only Endpoint
-
-**Endpoint:** `GET /api/auth/admin-only`  
-**Headers:** `Authorization: Bearer {token}`  
-
-**Response:**
-
-```json
-{
-  "message": "Welcome, admin!"
-}
-```
-
-### Setup Multi-Factor Authentication (MFA)
-
-**Endpoint:** `POST /api/auth/setup-mfa`  
-**Headers:** `Authorization: Bearer {token}`, `Content-Type: application/json`  
-**Body:**
-
-```json
-{
-  "mfa_enabled": true
-}
-```
-
-**Response:**
-
-```json
-{
-  "message": "MFA setting updated successfully"
-}
-```
-
-## Testing the Endpoints
-
-To test the endpoints, you can use Postman:
-
-1. **Register a new user** by sending a POST request to `/api/auth/register`.
-2. **Login with the user** by sending a POST request to `/api/auth/login` and obtain the JWT token.
-3. **Access protected endpoints** by including the JWT token in the `Authorization` header as `Bearer {token}`.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
 
+You can replace the contents of your `README.md` file with the above Markdown content. This will provide detailed instructions and information about your project.

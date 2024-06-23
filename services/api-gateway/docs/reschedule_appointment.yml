@@ -1,0 +1,42 @@
+swagger: "2.0"
+info:
+  description: "Reschedule an appointment"
+  version: "1.0.0"
+  title: "Reschedule Appointment"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+  - in: "path"
+    name: "appointment_id"
+    type: "string"
+    required: true
+    description: "ID of the appointment to reschedule"
+  - in: "body"
+    name: "body"
+    description: "New date and time for the appointment"
+    required: true
+    schema:
+      type: object
+      properties:
+        new_date_time:
+          type: string
+          example: "2024-06-08T14:30:00"
+responses:
+  200:
+    description: "Appointment rescheduled successfully"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment rescheduled successfully"
+  400:
+    description: "Invalid date format or date and time in the past"
+  401:
+    description: "Token is missing or invalid"

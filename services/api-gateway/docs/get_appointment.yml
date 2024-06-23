@@ -1,0 +1,55 @@
+swagger: "2.0"
+info:
+  description: "Retrieve a specific appointment by ID"
+  version: "1.0.0"
+  title: "Get Appointment"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+produces:
+  - "application/json"
+parameters:
+  - name: "appointment_id"
+    in: "path"
+    required: true
+    type: "string"
+    description: "ID of the appointment to retrieve"
+responses:
+  200:
+    description: "Successful retrieval of appointment"
+    schema:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "5f47a99e68b93b63f8c0d163"
+        user:
+          type: string
+          example: "user@example.com"
+        doctor:
+          type: string
+          example: "Dr. Smith"
+        date_time:
+          type: string
+          format: date-time
+          example: "2024-06-10T14:30:00"
+        status:
+          type: string
+          example: "Scheduled"
+  404:
+    description: "Appointment not found"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment not found"
+  401:
+    description: "Token is missing or invalid"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Token is missing or invalid"

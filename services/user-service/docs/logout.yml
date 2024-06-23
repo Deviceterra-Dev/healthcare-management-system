@@ -1,0 +1,16 @@
+swagger: "2.0"
+info:
+  description: "Logout the user"
+  version: "1.0.0"
+  title: "Logout"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+responses:
+  200:
+    description: "Successfully logged out"

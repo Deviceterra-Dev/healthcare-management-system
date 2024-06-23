@@ -1,0 +1,32 @@
+swagger: "2.0"
+info:
+  description: "Approve or reject a doctor"
+  version: "1.0.0"
+  title: "Approve Doctor"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+  - in: "body"
+    name: "body"
+    description: "Approval data"
+    required: true
+    schema:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "doctor@example.com"
+        approve:
+          type: boolean
+          example: true
+responses:
+  200:
+    description: "Doctor approved or rejected successfully"
+  404:
+    description: "User not found or not a doctor"

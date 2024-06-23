@@ -1,0 +1,32 @@
+swagger: "2.0"
+info:
+  description: "Get the status of a specific appointment"
+  version: "1.0.0"
+  title: "Get Appointment Status"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+produces:
+  - "application/json"
+parameters:
+  - name: "appointment_id"
+    in: "path"
+    required: true
+    type: "string"
+    description: "ID of the appointment to retrieve status"
+responses:
+  200:
+    description: "Appointment status"
+    schema:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "Scheduled"
+  400:
+    description: "Invalid appointment ID"
+  401:
+    description: "Token is missing or invalid"
+  404:
+    description: "Appointment not found"

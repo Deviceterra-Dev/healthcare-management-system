@@ -1,0 +1,29 @@
+swagger: "2.0"
+info:
+  description: "Get all appointments for the current user"
+  version: "1.0.0"
+  title: "Get User Appointments"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+produces:
+  - "application/json"
+responses:
+  200:
+    description: "List of user's appointments"
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+          user:
+            type: string
+          doctor:
+            type: string
+          date_time:
+            type: string
+  401:
+    description: "Token is missing or invalid"

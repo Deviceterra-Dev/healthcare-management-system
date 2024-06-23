@@ -1,0 +1,20 @@
+swagger: "2.0"
+info:
+  description: "Refresh JWT token"
+  version: "1.0.0"
+  title: "Refresh Token"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+produces:
+  - "application/json"
+responses:
+  200:
+    description: "Token refreshed successfully"
+    schema:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "JWT token"

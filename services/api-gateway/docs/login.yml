@@ -1,0 +1,41 @@
+swagger: "2.0"
+info:
+  description: "Login a user"
+  version: "1.0.0"
+  title: "User Login"
+tags:
+  - "auth"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+  - in: "body"
+    name: "body"
+    description: "User credentials for login"
+    required: true
+    schema:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "user@example.com"
+        password:
+          type: string
+          example: "password123"
+responses:
+  200:
+    description: "Login successful"
+    schema:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "JWT token"
+        refresh_token:
+          type: string
+          example: "Refresh JWT token"
+  401:
+    description: "Invalid credentials"
+  403:
+    description: "Doctor not approved by admin"

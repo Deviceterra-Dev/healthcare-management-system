@@ -1,0 +1,31 @@
+swagger: "2.0"
+info:
+  description: "Update doctor availability"
+  version: "1.0.0"
+  title: "Update Availability"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+  - in: "body"
+    name: "body"
+    description: "Availability data"
+    required: true
+    schema:
+      type: object
+      properties:
+        availability:
+          type: array
+          items:
+            type: string
+          example: ["Monday 10:00-14:00", "Wednesday 12:00-16:00"]
+responses:
+  200:
+    description: "Availability updated successfully"
+  404:
+    description: "User not found"

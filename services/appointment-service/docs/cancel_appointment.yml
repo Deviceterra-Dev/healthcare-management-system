@@ -1,0 +1,32 @@
+swagger: "2.0"
+info:
+  description: "Cancel an appointment"
+  version: "1.0.0"
+  title: "Cancel Appointment"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+  - in: "path"
+    name: "appointment_id"
+    type: "string"
+    required: true
+    description: "ID of the appointment to cancel"
+responses:
+  200:
+    description: "Appointment canceled successfully"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment canceled successfully"
+  400:
+    description: "Invalid appointment ID"
+  401:
+    description: "Token is missing or invalid"

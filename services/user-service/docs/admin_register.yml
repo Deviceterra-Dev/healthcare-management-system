@@ -1,0 +1,47 @@
+swagger: "2.0"
+info:
+  description: "Register a new admin"
+  version: "1.0.0"
+  title: "Admin Registration"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+  - in: "body"
+    name: "body"
+    description: "Admin object that needs to be added"
+    required: true
+    schema:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "admin@example.com"
+        password:
+          type: string
+          example: "adminpassword"
+        username:
+          type: string
+          example: "adminuser"
+        phone:
+          type: string
+          example: "1234567890"
+responses:
+  201:
+    description: "Admin registered successfully"
+    schema:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "JWT token"
+        refresh_token:
+          type: string
+          example: "Refresh JWT token"
+  400:
+    description: "User already exists"

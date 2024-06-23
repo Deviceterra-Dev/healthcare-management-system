@@ -1,0 +1,30 @@
+swagger: "2.0"
+info:
+  description: "Get available doctors"
+  version: "1.0.0"
+  title: "Get Available Doctors"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+produces:
+  - "application/json"
+responses:
+  200:
+    description: "List of available doctors"
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          username:
+            type: string
+            example: "johndoe"
+          specialty:
+            type: string
+            example: "Cardiology"
+          availability:
+            type: array
+            items:
+              type: string
+            example: ["Monday 10:00-14:00", "Wednesday 12:00-16:00"]

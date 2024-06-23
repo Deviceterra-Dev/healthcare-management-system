@@ -1,0 +1,20 @@
+swagger: "2.0"
+info:
+  description: "Verify user email"
+  version: "1.0.0"
+  title: "Verify Email"
+tags:
+  - "auth"
+produces:
+  - "application/json"
+parameters:
+  - in: "query"
+    name: "token"
+    description: "Verification token"
+    required: true
+    type: string
+responses:
+  200:
+    description: "Email verified successfully"
+  400:
+    description: "Invalid token or token has expired"

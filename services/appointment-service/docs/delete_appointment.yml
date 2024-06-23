@@ -1,0 +1,32 @@
+swagger: "2.0"
+info:
+  description: "Delete a specific appointment"
+  version: "1.0.0"
+  title: "Delete Appointment"
+security:
+  - Bearer: []
+tags:
+  - "appointments"
+produces:
+  - "application/json"
+parameters:
+  - name: "appointment_id"
+    in: "path"
+    required: true
+    type: "string"
+    description: "ID of the appointment to delete"
+responses:
+  200:
+    description: "Appointment deleted successfully"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment deleted successfully"
+  400:
+    description: "Invalid appointment ID"
+  401:
+    description: "Token is missing or invalid"
+  404:
+    description: "Appointment not found"

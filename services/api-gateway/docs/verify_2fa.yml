@@ -1,0 +1,16 @@
+swagger: "2.0"
+info:
+  description: "Verify 2FA"
+  version: "1.0.0"
+  title: "Verify 2FA"
+security:
+  - Bearer: []
+tags:
+  - "auth"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+responses:
+  200:
+    description: "2FA verification successful"
