@@ -31,8 +31,8 @@ template = {
     },
     "basePath": "/",  # base path for blueprint registration
     "schemes": [
-        "http",
-        "https"
+        "https",  # Ensure HTTPS is used
+        "http"
     ],
     "securityDefinitions": {
         "Bearer": {

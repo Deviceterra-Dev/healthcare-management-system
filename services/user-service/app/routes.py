@@ -145,7 +145,7 @@ def login():
 
     token = create_access_token(identity={'email': email, 'role': user_data['role'], 'approved': user_data.get('approved', False)})
     refresh_token = create_refresh_token(identity={'email': email, 'role': user_data['role'], 'approved': user_data.get('approved', False)})
-    return jsonify({'token': token, 'refresh_token': refresh_token}), 200
+    return jsonify({'token': token, 'refresh_token': refresh_token, 'role': user_data['role']}), 200
 
 @auth.route('/profile', methods=['GET'])
 @jwt_required()

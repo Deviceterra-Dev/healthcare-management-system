@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
+from prometheus_flask_exporter import PrometheusMetrics
 from app.routes import appointments
 from config import Config
 
@@ -16,8 +17,8 @@ def create_app():
             {
                 "endpoint": 'apispec_1',
                 "route": '/apispec_1.json',
-                "rule_filter": lambda rule: True,  # all endpoints
-                "model_filter": lambda tag: True,  # all models
+                "rule_filter": lambda rule: True,
+                "model_filter": lambda tag: True,
             }
         ],
         "static_url_path": "/flasgger_static",
@@ -39,6 +40,8 @@ def create_app():
     }
 
     swagger = Swagger(app, config=swagger_config)
+
+    metrics = PrometheusMetrics(app)  # Initialize Prometheus Metrics
 
     app.register_blueprint(appointments, url_prefix='/api/appointments')
 

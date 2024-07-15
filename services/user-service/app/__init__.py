@@ -16,7 +16,7 @@ def create_app(config_name):
     # Initialize extensions
     jwt = JWTManager(app)
     swagger = init_swagger(app)
-    CORS(app)
+    CORS(app, resources={r"/*": {"origins": "*"}})  # Correct initialization here
     mail.init_app(app)
 
     # Set up logging

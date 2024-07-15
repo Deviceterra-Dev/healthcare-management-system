@@ -1,0 +1,22 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'api-gateway'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['api-gateway:8000']
+
+  - job_name: 'user-service'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['user-service:5000']
+
+  - job_name: 'appointment-service'
+    metrics_path: /api/appointments/metrics
+    static_configs:
+      - targets: ['appointment-service:5001']

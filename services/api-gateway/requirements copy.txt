@@ -5,11 +5,8 @@ charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
 flasgger==0.9.7.1
-Flask==2.1.2
-Flask-Caching==2.0.0
+Flask==3.0.3
 Flask-JWT-Extended==4.6.0
-Flask-Limiter==3.1.0
-Flask-HTTPAuth==4.7.0
 idna==3.7
 itsdangerous==2.2.0
 Jinja2==3.1.4
@@ -25,8 +22,4 @@ requests==2.32.3
 rpds-py==0.18.1
 six==1.16.0
 urllib3==2.2.1
-Werkzeug==2.0.3
-python-dotenv==1.0.0
-redis==5.0.0
-prometheus_client
-prometheus-flask-exporter
+Werkzeug==3.0.3
