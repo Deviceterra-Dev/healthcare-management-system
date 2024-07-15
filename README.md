@@ -1,113 +1,123 @@
-Here's a `README.md` file for your healthcare management system project:
+Here's the `README.md` code with a section on how to run the app in a development environment:
 
-
+```markdown
 # Healthcare Management System
 
-A comprehensive healthcare management system built using microservices architecture. This system includes user management, appointment scheduling, and more. Each service is containerized using Docker and managed with Docker Compose.
+## Overview
 
-## Table of Contents
+This project is a microservices-based healthcare management system designed to facilitate efficient management of medical appointments, user authentication, and document storage. It includes the following services:
 
-- [Architecture](#architecture)
-- [Services](#services)
-  - [User Service](#user-service)
-  - [API Gateway](#api-gateway)
-  - [Appointment Service](#appointment-service)
-  - [MongoDB](#mongodb)
-- [Setup and Installation](#setup-and-installation)
-  - [Prerequisites](#prerequisites)
-  - [Running the Project](#running-the-project)
-- [Environment Variables](#environment-variables)
-- [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
+- **API Gateway Service**
+- **Appointment Service**
+- **User Service**
 
-## Architecture
+## Microservices
 
-The project follows a microservices architecture where different services are responsible for specific functionalities. The services communicate with each other via RESTful APIs.
-
-## Services
-
-### User Service
-
-Handles user registration, authentication, and management. This service includes roles such as patient, doctor, admin, and superadmin.
-
-### API Gateway
-
-Acts as a single entry point to the system. It routes requests to the appropriate services and handles authentication and authorization.
+### API Gateway Service
+- **Purpose**: Acts as a single entry point for all client requests, routing them to the appropriate microservices.
+- **Key Features**:
+  - JWT Authentication and Authorization
+  - Rate Limiting
+  - Caching with Redis
+  - Swagger API Documentation
+  - Prometheus Metrics
 
 ### Appointment Service
+- **Purpose**: Manages appointments between patients and doctors.
+- **Key Features**:
+  - CRUD operations for appointments
+  - JWT Authentication
+  - Swagger API Documentation
+  - Prometheus Metrics
 
-Manages appointment scheduling, including creating, updating, and deleting appointments.
+### User Service
+- **Purpose**: Manages user data and authentication.
+- **Key Features**:
+  - User Registration and Login
+  - JWT Authentication
+  - Role-Based Access Control
+  - Multi-Factor Authentication (MFA)
+  - Email Verification
+  - Swagger API Documentation
 
-### MongoDB
+## Configuration and Deployment
 
-A NoSQL database used to store all the data for the healthcare management system.
+The project uses Docker Compose to manage multi-container Docker applications, including MongoDB and Redis.
 
-## Setup and Installation
+### Services
+- `user-service`
+- `api-gateway`
+- `appointment-service`
+- `mongo`
+- `redis`
+- `prometheus`
+- `grafana`
+
+## How to Run the App in a Development Environment
 
 ### Prerequisites
-
 - Docker
 - Docker Compose
 
-### Running the Project
+### Steps to Run
 
-1. Clone the repository:
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/yourusername/healthcare-management-system.git
+   cd healthcare-management-system
+   ```
 
-```sh
-git clone https://github.com/yourusername/healthcare-management-system.git
-cd healthcare-management-system
-```
+2. **Set Up Environment Variables**
 
-2. Set up environment variables:
+   Create a `.env` file in the root directory of the project with the following content:
 
-Create a `.env` file in the root directory and add the following variables:
+   ```env
+   SECRET_KEY=your_secret_key
+   MONGO_URI=mongodb://mongo:27017/healthcare
+   JWT_SECRET_KEY=your_jwt_secret_key
+   MAIL_SERVER=smtp.gmail.com
+   MAIL_PORT=587
+   MAIL_USE_TLS=True
+   MAIL_USE_SSL=False
+   MAIL_USERNAME=your_email@gmail.com
+   MAIL_PASSWORD=your_email_password
+   MAIL_DEFAULT_SENDER=your_email@gmail.com
+   FRONTEND_URL=http://localhost:3000
+   ```
 
-```env
-SECRET_KEY=your_secret_key
-MONGO_URI=mongodb://mongo:27017/user_service
-JWT_SECRET_KEY=your_jwt_secret_key
-FLASK_ENV=development
-SUPERADMIN_EMAIL=your_superadmin_email
-SUPERADMIN_PASSWORD=your_superadmin_password
-```
+3. **Build and Run the Containers**
+   ```bash
+   docker-compose up --build
+   ```
 
-3. Build and run the services using Docker Compose:
+4. **Access the Services**
+   - **API Gateway**: `http://localhost:8000`
+   - **User Service**: `http://localhost:5000`
+   - **Appointment Service**: `http://localhost:5001`
+   - **MongoDB**: `mongodb://localhost:27017`
+   - **Redis**: `redis://localhost:6379`
+   - **Prometheus**: `http://localhost:9090`
+   - **Grafana**: `http://localhost:3000`
 
-```sh
-docker-compose up --build
-```
+### Notes
+- Ensure that ports `5000`, `5001`, `8000`, `27017`, `6379`, `9090`, and `3000` are not in use by other applications.
+- The default credentials for Grafana are `admin` for both the username and password. Change the password immediately after the first login.
 
-The services will be accessible on the following ports:
-- User Service: `http://localhost:5000`
-- API Gateway: `http://localhost:8000`
-- Appointment Service: `http://localhost:5001`
-- MongoDB: `mongodb://localhost:27017`
+### Documentation
+- API documentation for each service is available at `/apidocs` endpoint of each service.
 
-## Environment Variables
-
-- `SECRET_KEY`: Secret key for Flask application.
-- `MONGO_URI`: URI for connecting to MongoDB.
-- `JWT_SECRET_KEY`: Secret key for JWT authentication.
-- `FLASK_ENV`: Environment setting for Flask (`development` or `production`).
-- `SUPERADMIN_EMAIL`: Email for the super admin account.
-- `SUPERADMIN_PASSWORD`: Password for the super admin account.
-
-## API Documentation
-
-API documentation is available using Swagger. After starting the services, you can access the documentation at:
-
-- User Service: `http://localhost:5000/apidocs`
-- API Gateway: `http://localhost:8000/apidocs`
-- Appointment Service: `http://localhost:5001/apidocs`
+### Example API Requests
+- **Register a User**: `POST /auth/register`
+- **Login**: `POST /auth/login`
+- **Create Appointment**: `POST /api/appointments`
 
 ## Contributing
 
-We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) for more information.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
 
-You may need to adjust the URLs, paths, and environment variable names to fit your specific setup. Also, consider adding more details about each endpoint in the API documentation section if necessary.
+This `README.md` provides a clear overview of the project, instructions for setting up the development environment, and details on how to run the application. You can customize the repository URL and any other specifics as needed.
