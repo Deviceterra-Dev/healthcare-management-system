@@ -41,6 +41,28 @@ services:
       - mongo
       - redis
 
+  nextcloud:
+    image: nextcloud
+    ports:
+      - "8080:80"
+    environment:
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+    depends_on:
+      - db
+
+  db:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    volumes:
+      - db_data:/var/lib/mysql
+
   mongo:
     image: mongo:latest
     ports:
@@ -71,3 +93,4 @@ services:
 
 volumes:
   mongo_data:
+  db_data:
