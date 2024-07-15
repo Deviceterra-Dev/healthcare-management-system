@@ -1,5 +1,3 @@
-Here's the `README.md` code with a section on how to run the app in a development environment:
-
 ```markdown
 # Healthcare Management System
 
@@ -119,5 +117,3 @@ We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) 
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
-
-This `README.md` provides a clear overview of the project, instructions for setting up the development environment, and details on how to run the application. You can customize the repository URL and any other specifics as needed.
